@@ -1,0 +1,36 @@
+<h2>Login here!</h2>
+<form [formGroup]="form" (ngSubmit)="login()">
+    <table>
+        <thead>
+            <tr><th style="width: 50%;"></th></tr>
+            <tr style="text-align: centre;">
+                <th colspan="2">Login here</th>
+            </tr>
+        </thead>
+        <br>
+        <tbody>
+            <tr>
+                <td>Username:</td>
+                <td>
+                    <input type="text" formControlName="username">
+                </td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td>
+                    <input type="password" formControlName="password">
+                </td>
+            </tr>
+            <br>
+            <tr>
+                <td></td>
+                <td><button type="submit" [disabled]="form.invalid">Login</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+
+</form>
+
+<td><button type ="button" [routerLink]="['']">Back</button></td>
+

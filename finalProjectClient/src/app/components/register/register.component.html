@@ -1,0 +1,41 @@
+<h2>Register for StockStatus here!</h2>
+<form [formGroup]="form" (ngSubmit)="registration()">
+    <table>
+        <thead>
+            <tr><th style="width: 50%;"></th></tr>
+            <tr style="text-align: centre;">
+                <th colspan="2">Register here</th>
+            </tr>
+        </thead>
+        <br>
+        <tbody>
+            <tr>
+                <td>Email:</td>
+                <td>
+                    <input type="text" formControlName="email">
+                </td>
+            </tr>
+            <tr>
+                <td>Username:</td>
+                <td>
+                    <input type="text" formControlName="username">
+                </td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td>
+                    <input type="text" formControlName="password">
+                </td>
+            </tr>
+            <br>
+            <tr>
+                <td></td>
+                <td><button type="submit" [disabled]="form.invalid">Register</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+
+</form>
+<td><button type ="button" [routerLink]="['']">Back</button></td>
+

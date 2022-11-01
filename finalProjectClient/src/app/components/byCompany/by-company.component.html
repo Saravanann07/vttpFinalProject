@@ -1,0 +1,29 @@
+<h3>Here are your stock purchase by Company</h3>
+<table class="table">
+    <thead>
+        <tr style="text-align: center;">
+            <th>#</th>
+            <th>Purchase Date</th>
+            <th>Symbol</th>
+            <th>Company Name</th>
+            <th>Quantity</th>
+            <th>Stock Price (US$)</th>
+            <th>Total Price (US$)</th>
+            <th>Stock Value (US$)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let stock of stockListSymbol; let idx = index;">
+            <td> {{ idx + 1 }}</td>
+            <td> {{ stock.purchaseDate }}</td>
+            <td> {{ stock.symbol }}</td>
+            <td> {{ stock.companyName }}</td>
+            <td> {{ stock.quantity }}</td>
+            <td> {{ stock.stockPrice }}</td>
+            <td> {{ stock.totalPrice }}</td>
+            <td> {{ stock.stockValue }}</td>
+            <td><button type="button" (click)="deleteStock(stock)">X</button></td>
+        </tr>
+    </tbody>
+</table>

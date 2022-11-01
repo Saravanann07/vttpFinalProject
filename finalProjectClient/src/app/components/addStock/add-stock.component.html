@@ -1,0 +1,58 @@
+<h2>Add your stock purchase here!</h2>
+<form [formGroup]="form" (ngSubmit)="stockAdded()">
+    <table>
+        <thead>
+            <tr><th style="width: 50%;"></th></tr>
+            <tr style="text-align: centre;">
+                <th colspan="2">Register here</th>
+            </tr>
+        </thead>
+        <br>
+        <tbody>
+            <tr>
+                <td>Purchase Date:</td>
+                <td>
+                    <input type="text" formControlName="purchaseDate">
+                </td>
+            </tr>
+            <tr>
+                <td>Symbol:</td>
+                <td>
+                    <input type="text" formControlName="symbol">
+                </td>
+            </tr>
+            <tr>
+                <td>Company Name:</td>
+                <td>
+                    <input type="text" formControlName="companyName">
+                </td>
+            </tr>
+            <tr>
+                <td>Quantity:</td>
+                <td>
+                    <input type="number" formControlName="quantity">
+                </td>
+            </tr>
+            <tr>
+                <td>Stock Price:</td>
+                <td>
+                    <input type="number" formControlName="stockPrice">
+                </td>
+            </tr>
+            <tr>
+                <td>Total Price: </td>
+                <td>
+                    <input type="text" formControlName="totalPrice">
+                </td>
+            </tr>
+            <br>
+            <tr>
+                <td></td>
+                <td><button type="submit" [disabled]="form.invalid">Add</button></td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+
+<button type ="button" [routerLink]="['/homepage']">Back</button>
+
