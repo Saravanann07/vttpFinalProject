@@ -1,4 +1,4 @@
-package vttp2022batch1.finalProjectServer.services;
+package vttp2022batch1.finalProjectServer.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +10,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 @Configuration
-public class APPConfig {
+public class SpacesConfig {
 
     private String accessKey = "DO00HRWEGZDA9EU3XZ2U";
     private String secretKey = "byWestPxPBOpIS1i3DT2w1uMmH98aAsFAkMPA7H35wo";
@@ -26,8 +26,5 @@ public class APPConfig {
             .withCredentials(new AWSStaticCredentialsProvider(cred))
             .build();
     }
-
+    
 }
-
-
-

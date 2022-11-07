@@ -13,14 +13,17 @@ export class ByDateComponent implements OnInit {
   stockListDate!: Stock[];
   stock!: Stock
   date!: string
+  userId!: string;
 
   constructor(private stockSvc: StockService,
               private router: Router,
               private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.date = this.activatedRoute.snapshot.params['date']
-    this.stockSvc.getStocksByDate(this.date)
+    this.date = this.activatedRoute.snapshot.queryParams['date']
+    this.userId = this.activatedRoute.snapshot.params['userId']
+
+    this.stockSvc.getStocksByDate(this.userId, this.date)
       .then(result => {
         console.info('>>>>>>Stock List by Date', result)
         this.stockListDate = result
@@ -31,11 +34,13 @@ export class ByDateComponent implements OnInit {
   }
 
   deleteStock(stock: Stock){
-    this.stockSvc.deleteStock(stock)
+    this.userId = localStorage.getItem('userId')!
+    this.stockSvc.deleteStock(stock, stock.userId)
     .then((data: any) => {
       const resp: Response = data;
-      alert(resp.message);        
-      this.router.navigate(['/byDate'])
+      alert(resp.message);  
+      console.info(this.date)      
+      this.router.navigate(['/homepage', this.userId])
       this.retrieveStockList()
     }).catch((error: any) => {
       const resp: Response = error;
@@ -44,13 +49,20 @@ export class ByDateComponent implements OnInit {
   }
 
   private retrieveStockList(){
-    this.stockSvc.getStocksByDate(this.stock.purchaseDate)
+    this.stockSvc.getStocksByDate(this.stock.purchaseDate, this.userId)
       .then(data => {
         this.stockListDate = data
-        this.router.navigate(['/byDate'])
+        this.router.navigate(['/homepage', this.userId])
       }).catch(error =>{
         console.info('>>>>>. Error!')
       })
   }
+
+  userLogout(){
+    localStorage.removeItem('token')
+    localStorage.removeItem('userId')     
+    localStorage.removeItem('username')
+    this.router.navigate([''])
+}
 
 }

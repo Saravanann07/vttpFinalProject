@@ -1,6 +1,8 @@
 <h2>Welcome to StockStatus</h2>
 <h3>Here are your stock purchases</h3>
 
+<img [src]="this.imgSrc" alt="profile picture">
+
 <table class="table">
     <thead>
         <tr style="text-align: center;">
@@ -40,10 +42,37 @@
                 <input type="text" formControlName="symbol">
             </td>
         </tr>
+        <br>
         <tr>
-            <td><button type="button" [routerLink]="[ '/byCompany' ]">Search</button></td>
+            <td><button type="submit">Search</button></td>
         </tr>
     </tbody>
 </form>
 
-<button type="button" [routerLink]="[ '/addStock' ]">Add Stock Purchases</button>
+<h3>Search by Date</h3>
+<form [formGroup]="dateForm" (ngSubmit)="byDate()">
+    <tbody>
+        <tr>
+            <td>Date:</td>
+            <td>
+                <input type="text" formControlName="purchaseDate">
+            </td>
+        </tr>
+        <br>
+        <tr>
+            <td><button type="submit">Search</button></td>
+        </tr>
+    </tbody>
+</form>
+<br>
+<br>
+
+<button type="button" [routerLink]="[ '/addStock', userId ]">Add Stock Purchases</button>
+<br>
+<br>
+<br>
+<div>
+<button type="button" (click)="userLogout()">Logout</button>
+</div>
+
+

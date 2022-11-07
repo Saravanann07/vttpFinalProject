@@ -14,16 +14,19 @@ import { HomePageComponent } from './components/homepage/home-page.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './material.module';
+
 
 const appRoutes: Routes = [
   { path: '', component: WelcomeComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'homepage/:username', component: HomePageComponent },
-  { path: 'addStock', component: AddStockComponent},
-  { path: 'byDate', component: ByDateComponent },
-  { path: 'byCompany', component: ByCompanyComponent },
-  { path: '', redirectTo: '', pathMatch: 'full' }
+  { path: 'register',  component: RegisterComponent },
+  { path: 'login',  component: LoginComponent },
+  { path: 'homepage/:userId', component: HomePageComponent },
+  { path: 'addStock/:userId', component: AddStockComponent},
+  { path: 'byDate/:userId', component: ByDateComponent },
+  { path: 'byCompany/:userId', component: ByCompanyComponent },
+  { path: '**', redirectTo: '/', pathMatch: 'full' }
 
 ]
 
@@ -39,7 +42,10 @@ const appRoutes: Routes = [
     AddStockComponent
   ],
   imports: [
-    BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule, RouterModule.forRoot(appRoutes, {useHash: true})
+    BrowserModule, FormsModule, ReactiveFormsModule, 
+    HttpClientModule, RouterModule.forRoot(appRoutes, {useHash: true}), 
+    MaterialModule
+    
   ],
   providers: [UserService, StockService],
   bootstrap: [AppComponent]

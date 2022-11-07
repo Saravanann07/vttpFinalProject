@@ -24,7 +24,13 @@
             <tr>
                 <td>Password:</td>
                 <td>
-                    <input type="text" formControlName="password">
+                    <input type="password" formControlName="password">
+                </td>
+            </tr>
+            <tr>
+                <td>Profile Picture</td>
+                <td>
+                    <input type="file" formControlName="profilePic" (change)="userInputPhoto($event)">
                 </td>
             </tr>
             <br>

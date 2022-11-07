@@ -17,9 +17,16 @@ export class HomePageComponent implements OnInit {
 
   stockList!: Stock[];
 
-  username!: string;
+  userId!: string;
+
+  username!: string 
+
+  imgSrc!: string 
+  
 
   form!: FormGroup
+
+  dateForm!:FormGroup
 
   constructor(private stockSvc: StockService, 
               private userSvc: UserService,
@@ -29,10 +36,17 @@ export class HomePageComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.username = this.activatedRoute.snapshot.params['username']
+    this.userId = this.activatedRoute.snapshot.params['userId']
+
+    this.username = localStorage.getItem('username')!
+    console.info(this.username)
+    
+
+    this.imgSrc = `https://saravttp.sgp1.digitaloceanspaces.com/users/${this.username}`;
+    console.log(this.imgSrc)
    
     
-    this.stockSvc.getHomepage(this.username)
+    this.stockSvc.getHomepage(this.userId)
       .then(data => {
         this.stockList = data
         console.info(">>>>>>StockList retreived: ", data)
@@ -40,10 +54,18 @@ export class HomePageComponent implements OnInit {
         alert('Error occurred while retreiving stock list!')
       })
       this.createForm()
+      this.byDateSearch()
   }
 
+  userLogout(){
+    localStorage.removeItem('token')
+    localStorage.removeItem('userId')     
+    localStorage.removeItem('username')
+    this.router.navigate([''])
+}
+
   createForm(){
-    this.fb.group({
+    this.form = this.fb.group({
       symbol: this.fb.control<string>('', [Validators.required])
     })
   }
@@ -51,22 +73,32 @@ export class HomePageComponent implements OnInit {
   bySymbol(){
     console.info("Search button clicked")
     const stock: Stock = this.form.value as Stock
-    this.stockSvc.getStocksBySymbol(stock.symbol)
-      .then(result => {
-        console.info('>>>>> stockList: ', this.stockList)
-        this.stockList = result
-      }).catch( error => {
-        console.error('>>>>> error ', error)
-      })
-      this.onSearch.next(stock)
+    this.router.navigate(['/byCompany', this.userId], {queryParams: {symbol: stock.symbol}})
   }
 
+  byDateSearch(){
+    this.dateForm = this.fb.group({
+      purchaseDate: this.fb.control<string>('', [Validators.required])
+    })
+    
+  }
+
+  byDate(){
+    console.info("Date button clicked")
+    const stock: Stock = this.dateForm.value as Stock
+    this.router.navigate(['/byDate', this.userId], {queryParams: {date: stock.purchaseDate}})
+  }
+
+
+
   deleteStock(stock: Stock){
-    this.stockSvc.deleteStock(stock)
+    this.userId = localStorage.getItem('userId')!
+    console.info(stock.stockId)
+    this.stockSvc.deleteStock(stock, stock.userId)
     .then((data: any) => {
       const resp: Response = data;
       alert(resp.message);        
-      this.router.navigate(['/homepage'])
+      this.router.navigate(['/homepage', this.userId])
       this.retrieveStockList()
     }).catch((error: any) => {
       const resp: Response = error;
@@ -75,10 +107,10 @@ export class HomePageComponent implements OnInit {
   }
 
   private retrieveStockList(){
-    this.stockSvc.getHomepage(this.username)
+    this.stockSvc.getHomepage(this.userId)
       .then(data => {
         this.stockList = data
-        this.router.navigate(['/homepage'])
+        this.router.navigate(['/homepage', this.userId])
       }).catch(error =>{
         console.info('>>>>> Error!')
       })

@@ -14,8 +14,10 @@ import vttp2022batch1.finalProjectServer.models.Stock;
 @Repository
 public class StockRepository {
 
+    // public static final String SQL_INSERT_TRANSACTION = 
+    //     "INSERT INTO transactions (purchase_date, symbol, company_name, quantity, stock_price, total_price, user_id) values (?, ?, ?, ?, ?, ?, ?)";
     public static final String SQL_INSERT_TRANSACTION = 
-        "INSERT INTO transactions (purchase_date, symbol, company_name, quantity, stock_price, total_price, user_id) values (?, ?, ?, ?, ?, ?, ?)";
+    "INSERT INTO transactions (purchase_date, symbol, quantity, stock_price, total_price, user_id) values (?, ?, ?, ?, ?, ?)";
 
     public static final String SQL_SELECT_USER_TRANSACTIONS = "select * from transactions where user_id = ?";
 
@@ -33,9 +35,15 @@ public class StockRepository {
     @Autowired
     private JdbcTemplate template;
 
-    public int addStockPurchase(Stock stock, Integer userId){
+    // public int addStockPurchase(Stock stock, Integer userId){
 
-        int count = template.update(SQL_INSERT_TRANSACTION, stock.getPurchaseDate(), stock.getSymbol(), stock.getCompanyName(), stock.getQuantity(), stock.getStockPrice(), stock.getTotalPrice(), userId);
+    //     int count = template.update(SQL_INSERT_TRANSACTION, stock.getPurchaseDate(), stock.getSymbol(), stock.getCompanyName(), stock.getQuantity(), stock.getStockPrice(), stock.getTotalPrice(), userId);
+    //     return count;
+    // }
+
+    public int addStockPurchase(Stock stock){
+
+        int count = template.update(SQL_INSERT_TRANSACTION, stock.getPurchaseDate(), stock.getSymbol(), stock.getQuantity(), stock.getStockPrice(), stock.getTotalPrice(), stock.getUserId());
         return count;
     }
 
@@ -50,7 +58,7 @@ public class StockRepository {
             stock.setStockId(rs.getInt("transaction_id"));
             stock.setPurchaseDate(rs.getDate("purchase_date"));
             stock.setSymbol(rs.getString("symbol"));
-            stock.setCompanyName(rs.getString("company_name")); // string;
+            // stock.setCompanyName(rs.getString("company_name")); // string;
             stock.setQuantity(rs.getInt("quantity")); // int
             stock.setStockPrice(rs.getDouble("stock_price")); // double
             stock.setTotalPrice(rs.getDouble("total_price")); // double
@@ -70,7 +78,7 @@ public class StockRepository {
             stock.setStockId(rs.getInt("transaction_id"));
             stock.setPurchaseDate(rs.getDate("purchase_date"));
             stock.setSymbol(rs.getString("symbol"));
-            stock.setCompanyName(rs.getString("company_name")); // string;
+            // stock.setCompanyName(rs.getString("company_name")); // string;
             stock.setQuantity(rs.getInt("quantity")); // int
             stock.setStockPrice(rs.getDouble("stock_price")); // double
             stock.setTotalPrice(rs.getDouble("total_price")); // double
@@ -79,7 +87,27 @@ public class StockRepository {
         return stockListByCompany;
     }
 
-    public List<Stock> getUserStocksByDate(Date date, Integer userId){
+    // public List<Stock> getUserStocksByDate(Date date, Integer userId){
+
+    //     List<Stock> stockListByDate = new LinkedList<>();
+
+    //     final SqlRowSet rs = template.queryForRowSet(SQL_GET_USER_TRANSACTIONS_BY_DATE, date, userId);
+
+    //     while (rs.next()){
+    //         Stock stock = new Stock();
+    //         stock.setStockId(rs.getInt("transaction_id"));
+    //         stock.setPurchaseDate(rs.getDate("purchase_date"));
+    //         stock.setSymbol(rs.getString("symbol"));
+    //         stock.setCompanyName(rs.getString("company_name")); // string;
+    //         stock.setQuantity(rs.getInt("quantity")); // int
+    //         stock.setStockPrice(rs.getDouble("stock_price")); // double
+    //         stock.setTotalPrice(rs.getDouble("total_price")); // double
+    //         stockListByDate.add(stock);
+    //     }
+    //     return stockListByDate;
+    // }
+
+    public List<Stock> getUserStocksByDate(String date, Integer userId){
 
         List<Stock> stockListByDate = new LinkedList<>();
 
@@ -90,7 +118,7 @@ public class StockRepository {
             stock.setStockId(rs.getInt("transaction_id"));
             stock.setPurchaseDate(rs.getDate("purchase_date"));
             stock.setSymbol(rs.getString("symbol"));
-            stock.setCompanyName(rs.getString("company_name")); // string;
+            // stock.setCompanyName(rs.getString("company_name")); // string;
             stock.setQuantity(rs.getInt("quantity")); // int
             stock.setStockPrice(rs.getDouble("stock_price")); // double
             stock.setTotalPrice(rs.getDouble("total_price")); // double

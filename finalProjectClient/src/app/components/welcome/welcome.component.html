@@ -1,9 +1,25 @@
-<h1>Welcome to StockStatus</h1>
+<p>
+  <mat-toolbar color="primary"> 
+    <div style="text-align: center; margin:0 auto;">
+      <span >StockStatus</span>
+    </div>
+  </mat-toolbar>
+</p>
+
+
+<div style="text-align: center; margin:0 auto;">
+  <h1>Welcome to StockStatus</h1>
+</div>
+
+<img [src]="logo" alt="">
+
 <table>
   <tbody>
     <tr>
-      <td><button type ="button" [routerLink]="['login']">Login</button></td>
-      <td><button type="button" [routerLink]="['register']">Register</button></td>
+      <td><button mat-raised-button color="primary" [routerLink]="['login']">Login</button></td>
+      <td><button mat-raised-button color="primary" type="button" [routerLink]="['register']">Register</button></td>
+
     </tr>
   </tbody>
 </table>
+

@@ -1,6 +1,5 @@
 package vttp2022batch1.finalProjectServer.services;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +14,15 @@ public class StockService {
     @Autowired
     private StockRepository stockRepo;
 
-    public boolean addStockPurchase(Stock stock, Integer userId){
+    // public boolean addStockPurchase(Stock stock, Integer userId){
 
-        Integer addStock = stockRepo.addStockPurchase(stock, userId);
+    //     Integer addStock = stockRepo.addStockPurchase(stock, userId);
+
+    //     return addStock == 1;
+    // }
+    public boolean addStockPurchase(Stock stock){
+
+        Integer addStock = stockRepo.addStockPurchase(stock);
 
         return addStock == 1;
     }
@@ -30,9 +35,14 @@ public class StockService {
         return stockRepo.getCompanyStockList(symbol, userId);
     }
 
-    public List<Stock> getUserStockListByDate(Date date, Integer userId){
+    // public List<Stock> getUserStockListByDate(Date date, Integer userId){
+    //     return stockRepo.getUserStocksByDate(date, userId);
+    // }
+
+    public List<Stock> getUserStockListByDate(String date, Integer userId){
         return stockRepo.getUserStocksByDate(date, userId);
     }
+    
 
     public boolean deleteStock (Stock stock){
         int deleteStock = stockRepo.deleteStock(stock);

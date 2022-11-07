@@ -55,21 +55,36 @@ public class Stock {
 
         Stock stock = new Stock();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        // stock.setStockId(obj.getInt("stockId"));
         stock.setPurchaseDate(formatter.parse(obj.getString("purchaseDate")));
         stock.setSymbol(obj.getString("symbol"));
-        stock.setCompanyName(obj.getString("companyName"));
+        // stock.setCompanyName(obj.getString("companyName"));
         stock.setQuantity(obj.getInt("quantity"));
-        stock.setStockPrice(Double.parseDouble(obj.getString("stockPrice")));
-        stock.setTotalPrice(Double.parseDouble(obj.getString("totalPrice")));
-
+        stock.setStockPrice(Double.parseDouble(obj.getJsonNumber("stockPrice").toString()));
+        stock.setTotalPrice(Double.parseDouble(obj.getJsonNumber("totalPrice").toString()));
+        stock.setUserId(Integer.parseInt(obj.getString("userId")));
         return stock;
     }
 
     public static JsonObject toJson(Stock stock, Double totalStockValue){
         return Json.createObjectBuilder()
+            .add("stockId", stock.getStockId())
             .add("purchaseDate", stock.getPurchaseDate().toString())
             .add("symbol", stock.getSymbol())
             .add("companyName", stock.getCompanyName())
+            .add("quantity", stock.getQuantity())
+            .add("stockPrice", stock.getStockPrice())
+            .add("totalPrice", stock.getTotalPrice())
+            .add("stockValue", totalStockValue)
+            .build();
+    }
+
+    public static JsonObject toJsonName(Stock stock, String companyName, Double totalStockValue){
+        return Json.createObjectBuilder()
+            .add("stockId", stock.getStockId())
+            .add("purchaseDate", stock.getPurchaseDate().toString())
+            .add("symbol", stock.getSymbol())
+            .add("companyName", companyName)
             .add("quantity", stock.getQuantity())
             .add("stockPrice", stock.getStockPrice())
             .add("totalPrice", stock.getTotalPrice())
@@ -121,7 +136,7 @@ public class Stock {
 
         Stock stock = new Stock();
         // SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        stock.setStockId(obj.getInt("transaction_id"));
+        stock.setStockId(obj.getInt("stockId"));
         // stock.setPurchaseDate(formatter.parse(obj.getString("purchaseDate")));
         // stock.setSymbol(obj.getString("symbol"));
         // stock.setCompanyName(obj.getString("companyName"));

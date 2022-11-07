@@ -10,20 +10,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class AppConfig {
 
-    private Logger logger = Logger.getLogger(AppConfig.class.getName());
+    // private Logger logger = Logger.getLogger(AppConfig.class.getName());
 
-    @Value("${cors.pathMapping}")
-    String pathMapping;
+    // @Value("${cors.pathMapping}")
+    // String pathMapping;
 
-    @Value("${cors.origins}")
-    String origins;
+    // @Value("${cors.origins}")
+    // String origins;
 
-    @Bean
-    public WebMvcConfigurer webMvcConfigurer(){
-        logger.info("pathMappping: %s, origins: %s".formatted(pathMapping, origins));
-        return new CORSConfiguration(pathMapping, origins);
+    // @Bean
+    // public WebMvcConfigurer webMvcConfigurer(){
+    //     logger.info("pathMappping: %s, origins: %s".formatted(pathMapping, origins));
+    //     return new CORSConfiguration(pathMapping, origins);
         
-    }
+    // }
     
 
 

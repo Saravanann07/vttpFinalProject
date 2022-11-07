@@ -28,3 +28,18 @@ export interface Response {
     message: string,
     code: number
 }
+
+export interface jwtResponse {
+    jwt: string
+    userId: number
+    username: string
+}
+
+export interface Registration {
+    userId: number
+    email: string
+    username: string
+    password: string
+    profilePic: File
+    
+}

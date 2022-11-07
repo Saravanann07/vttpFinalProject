@@ -40,11 +40,12 @@ export class LoginComponent implements OnInit {
       .then ((data: any) => {
         const resp: Response = data;
         alert(resp.message)
-        this.router.navigate(['/homepage', user.username])
+        this.router.navigate(['/homepage', localStorage.getItem('userId')])
       }).catch((error: any) => {
         const resp: Response = error;
         alert(resp.message)
       })
+     
       this.onLogin.next(user)
   }
 

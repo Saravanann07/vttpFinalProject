@@ -1,18 +1,21 @@
 package vttp2022batch1.finalProjectServer.models;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 
-public class User {
+public class AppUser {
 
     Integer userId;
     String email;
     String username;
     String password;
-    // String profileName;
-    // String mediaType;
-    // byte[] profilePic;
 
+    //In registration model include
+    MultipartFile profilePic;
+
+    // byte[] profilePic;
 
     public Integer getUserId() {return this.userId;}
     public void setUserId(Integer userId) {this.userId = userId;}
@@ -37,9 +40,9 @@ public class User {
 
 
 
-    public static User create(JsonObject obj){
+    public static AppUser create(JsonObject obj){
 
-        User user = new User();
+        AppUser user = new AppUser();
         user.setEmail(obj.getString("email"));
         user.setUsername(obj.getString("username"));
         user.setPassword(obj.getString("password"));
@@ -47,24 +50,9 @@ public class User {
         return user;
     }
 
-    public static JsonObject toJson(User user){
+    public static JsonObject toJson(AppUser user){
         return Json.createObjectBuilder()
             .add("email", user.getEmail())
-            .add("username", user.getUsername())
-            .add("password", user.getPassword())
-            .build();
-    }
-
-    public static User createLogin(JsonObject obj){
-
-        User user = new User();
-        user.setUsername(obj.getString("username"));
-        user.setPassword(obj.getString("password"));
-        return user;
-    }
-
-    public static JsonObject toJsonLogin(User user){
-        return Json.createObjectBuilder()
             .add("username", user.getUsername())
             .add("password", user.getPassword())
             .build();

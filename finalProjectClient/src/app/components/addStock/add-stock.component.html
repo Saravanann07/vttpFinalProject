@@ -12,7 +12,7 @@
             <tr>
                 <td>Purchase Date:</td>
                 <td>
-                    <input type="text" formControlName="purchaseDate">
+                    <input type="date" formControlName="purchaseDate">
                 </td>
             </tr>
             <tr>
@@ -21,12 +21,12 @@
                     <input type="text" formControlName="symbol">
                 </td>
             </tr>
-            <tr>
+            <!-- <tr>
                 <td>Company Name:</td>
                 <td>
                     <input type="text" formControlName="companyName">
                 </td>
-            </tr>
+            </tr> -->
             <tr>
                 <td>Quantity:</td>
                 <td>
@@ -42,7 +42,7 @@
             <tr>
                 <td>Total Price: </td>
                 <td>
-                    <input type="text" formControlName="totalPrice">
+                    <input type="number" [value]="form.get('quantity')!.value * form.get('stockPrice')!.value" formControlName="totalPrice">
                 </td>
             </tr>
             <br>
@@ -53,6 +53,5 @@
         </tbody>
     </table>
 </form>
-
-<button type ="button" [routerLink]="['/homepage']">Back</button>
+<button type ="button" [routerLink]="['/homepage', userId]">Back</button>
 

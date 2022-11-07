@@ -18,13 +18,17 @@ import jakarta.json.JsonReader;
 public class APIService {
 
     //1
-    private static final String URL = "https://finnhub.io/api/v1/quote";
+    private static final String QUOTE_URL = "https://finnhub.io/api/v1/quote";
+
+    private static final String COMPANY_NAME_URL = "https://finnhub.io/api/v1/stock/profile2";
+
+
 
      public String finnhubKey = "cdbssmiad3ibgg4mujggcdbssmiad3ibgg4mujh0";
  
      public Double getQuote(String symbol){
  
-         String quote = UriComponentsBuilder.fromUriString(URL)
+         String quote = UriComponentsBuilder.fromUriString(QUOTE_URL)
              .queryParam("symbol", symbol)
              .queryParam("token", finnhubKey)
              .toUriString();
@@ -51,6 +55,32 @@ public class APIService {
          System.out.println(">>>>>>>>" + stockPrice);
          return stockPrice;
          
+     }
+
+     public String getCompanyName(String symbol){
+
+        String name = UriComponentsBuilder.fromUriString(COMPANY_NAME_URL)
+             .queryParam("symbol", symbol)
+             .queryParam("token", finnhubKey)
+             .toUriString();
+         System.out.println(">>>>>>>>" + name);
+
+         RequestEntity<Void> req = RequestEntity
+             .get(name)
+             .accept(MediaType.APPLICATION_JSON)
+             .build();
+
+        RestTemplate template = new RestTemplate();
+
+        ResponseEntity<String> resp = template.exchange(req, String.class);
+
+        InputStream is = new ByteArrayInputStream(resp.getBody().getBytes());
+        JsonReader reader = Json.createReader(is);
+        JsonObject obj = reader.readObject();
+
+        String companyName = obj.getString("name");
+
+        return companyName;
      }
      
  }

@@ -7,13 +7,13 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mysql.cj.xdevapi.JsonArray;
 
 import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;
@@ -29,9 +28,9 @@ import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 import vttp2022batch1.finalProjectServer.models.Response;
 import vttp2022batch1.finalProjectServer.models.Stock;
-import vttp2022batch1.finalProjectServer.models.User;
-import vttp2022batch1.finalProjectServer.repositories.UserRepository;
+import vttp2022batch1.finalProjectServer.models.Registration;
 import vttp2022batch1.finalProjectServer.services.APIService;
+import vttp2022batch1.finalProjectServer.services.DOService;
 import vttp2022batch1.finalProjectServer.services.EmailServiceImpl;
 import vttp2022batch1.finalProjectServer.services.StockService;
 import vttp2022batch1.finalProjectServer.services.UserService;
@@ -44,7 +43,9 @@ public class UserRestController {
     private APIService apiSvc;
 
     @Autowired
-    private UserRepository userRepo;
+    private DOService doSvc;
+
+
 
     @Autowired
     private UserService userSvc;
@@ -55,140 +56,40 @@ public class UserRestController {
     @Autowired
     private StockService stockSvc;
 
-    @PostMapping(path="registration", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> addUser(@RequestBody String payload){
 
-        JsonReader reader = Json.createReader(new ByteArrayInputStream(payload.getBytes()));
+    @PostMapping(path="/registration", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> registerUser(@ModelAttribute Registration reg){
 
-        JsonObject obj;
+        boolean addUser = userSvc.addUser(reg);
+        System.out.println(addUser);
+        boolean photoUploaded = doSvc.postS3upload(reg);
+        System.out.println(photoUploaded);
 
         Response resp = new Response();
 
-        try{
-            obj = reader.readObject();
-        } catch (Exception e){
-            resp.setCode(400);
-            resp.setMessage("error with payload");
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(Response.toJson(resp).toString());
-        }
+        if (addUser && photoUploaded){
 
-        User user = User.create(obj);
-
-        boolean addUser = userSvc.addUser(user);
-
-        if (addUser){
             resp.setCode(HttpStatus.OK.value());
-            resp.setMessage("User has been successfully registered");
-            emailImplSvc.sendSimpleEmail(user.getEmail(), user.getUsername());
+            resp.setMessage("Registration successful");
+
+            emailImplSvc.sendSimpleEmail(reg.getEmail(), reg.getUsername());
         }
-        else {
+        else{
             resp.setCode(HttpStatus.BAD_REQUEST.value());
             resp.setMessage("Error registering user");
         }
+
         return ResponseEntity
-                .status(resp.getCode())
-                .body(Response.toJson(resp).toString());
-    }
-
-    // @PostMapping(path="authenticate", consumes = MediaType.APPLICATION_JSON_VALUE)
-    // public ResponseEntity<String> postLogin(@RequestBody String payload, HttpSession sess){
-
-    //     JsonReader reader = Json.createReader(new ByteArrayInputStream(payload.getBytes()));
-
-    //     JsonObject obj;
-
-    //     Response resp = new Response();
-
-    //     try{
-    //         obj = reader.readObject();
-    //     } catch (Exception e){
-    //         resp.setCode(400);
-    //         resp.setMessage("error with payload");
-    //         return ResponseEntity
-    //                 .status(HttpStatus.BAD_REQUEST)
-    //                 .body(Response.toJson(resp).toString());
-    //     }
-
-    //     User user = User.createLogin(obj);
-
-    //     boolean userExist = userSvc.authenticate(user);
-    //     User user1 = userRepo.getUser(user);
-
-    //     if (!userExist){
-    //         resp.setCode(HttpStatus.UNAUTHORIZED.value());
-    //         resp.setMessage("Invalid credentials. Please try again");
-    //     }
-    //     else{
-    //         resp.setCode(HttpStatus.OK.value());
-    //         resp.setMessage("Login Successful");   
-    //     }
-    //     List<Stock> stockList = stockSvc.getUserStockList(user1.getUserId());
-    //         List<JsonObject> objectList =new LinkedList<>();
-
-    //         for (Stock stock : stockList){
-
-    //             Double sharePrice = apiSvc.getQuote(stock.getSymbol());
-    //             Double marketValue = sharePrice*stock.getQuantity();
-    //             objectList.add(Stock.toJson(stock, marketValue)); 
-    //         }
-
-    //         sess.setAttribute("username", user.getUsername());
-    //         sess.setAttribute("password", user.getPassword());
-    //     return ResponseEntity.ok().body(objectList.toString());
-                    
-
-    // }
-
-    @PostMapping(path="authenticate", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> postLogin(@RequestBody String payload, HttpSession sess){
-
-        JsonReader reader = Json.createReader(new ByteArrayInputStream(payload.getBytes()));
-
-        JsonObject obj;
-
-        Response resp = new Response();
-
-        try{
-            obj = reader.readObject();
-        } catch (Exception e){
-            resp.setCode(400);
-            resp.setMessage("error with payload");
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
+                    .status(resp.getCode())
                     .body(Response.toJson(resp).toString());
-        }
-
-        User user = User.createLogin(obj);
-
-        boolean userExist = userSvc.authenticate(user);
-        User user1 = userRepo.getUser(user);
-
-        if (!userExist){
-            resp.setCode(HttpStatus.UNAUTHORIZED.value());
-            resp.setMessage("Invalid credentials. Please try again");
-        }
-        else{
-            resp.setCode(HttpStatus.OK.value());
-            resp.setMessage("Login Successful");   
-        }
-
-            sess.setAttribute("username", user1.getUsername());
-            sess.setAttribute("password", user1.getPassword());
-        // return ResponseEntity.ok().body(objectList.toString());
-        return ResponseEntity
-        .status(resp.getCode())
-        .body(Response.toJson(resp).toString());
+        
     }
 
-    @PostMapping(path="stockAdded", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> postAdded(@RequestBody String payload, HttpSession sess) throws ParseException{
+    @PostMapping(path="/stockAdded", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> postAdded(@RequestBody String payload) throws ParseException{
 
-        String username = (String) sess.getAttribute("username");
-        String password = (String) sess.getAttribute("password");
 
-        User user = userRepo.getUser1(username, password);
+        System.out.println("Testtttttttt");
 
         JsonReader reader = Json.createReader(new ByteArrayInputStream(payload.getBytes()));
 
@@ -206,7 +107,7 @@ public class UserRestController {
         }
 
         Stock stock = Stock.create(obj);
-        boolean addStock = stockSvc.addStockPurchase(stock, user.getUserId());
+        boolean addStock = stockSvc.addStockPurchase(stock);
 
         if (addStock){
             resp.setCode(HttpStatus.OK.value());
@@ -223,19 +124,14 @@ public class UserRestController {
 
     }
 
-    @GetMapping(path="homepage")
-    public ResponseEntity<String> getUserStockList(@RequestParam String username){
+    @GetMapping(path="/homepage")
+    public ResponseEntity<String> getUserStockList(@RequestParam String userId){
+
+        Integer userIdInt = Integer.parseInt(userId);
        
-        // String username1 = (String) sess.getAttribute("username");
-        System.out.println("Username:>>>>"+ username);
-        // String password = (String) sess.getAttribute("password");
+        System.out.println("Username:>>>>"+ userId);
 
-        // User user = userRepo.getUser1(username, password);
-        Integer userId = userRepo.getUserId(username);
-        System.out.println(">>>>>>>UserId " + userId);
-
-
-        List<Stock> stockList = stockSvc.getUserStockList(userId);
+        List<Stock> stockList = stockSvc.getUserStockList(userIdInt);
         List<JsonObject> objectList = new LinkedList<>();
         JsonArrayBuilder builder = Json.createArrayBuilder();
 
@@ -243,62 +139,76 @@ public class UserRestController {
             System.out.println(stock.getCompanyName());
             Double sharePrice = apiSvc.getQuote(stock.getSymbol());
             Double marketValue = sharePrice*stock.getQuantity();
-            objectList.add(Stock.toJson(stock, marketValue)); 
+            String companyName = apiSvc.getCompanyName(stock.getSymbol());
+            // objectList.add(Stock.toJson(stock, marketValue)); 
+            objectList.add(Stock.toJsonName(stock, companyName, marketValue));
+            System.out.println(objectList);
 
-            builder.add(Stock.toJson(stock, marketValue));
+            // builder.add(Stock.toJson(stock, marketValue));
+            builder.add(Stock.toJsonName(stock, companyName, marketValue));
         }
         return ResponseEntity.ok().body(builder.build().toString());
     }
 
-    @GetMapping(path="/{date}")
-    public ResponseEntity<String> getUserStockListByDate(@PathVariable String date, HttpSession sess) throws ParseException{
+    @GetMapping(path="api/{date}")
+    public ResponseEntity<String> getUserStockListByDate(@RequestParam String userId, @PathVariable String date) throws ParseException{
 
-        String username = (String) sess.getAttribute("username");
-        String password = (String) sess.getAttribute("password");
+        Integer userIdInt = Integer.parseInt(userId);
+
+        System.out.println(date);
 
         Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
 
-        User user = userRepo.getUser1(username, password);
-        System.out.println(">>>>>>> " + username);
+        System.out.println(date1);
 
-        List<Stock> stockList = stockSvc.getUserStockListByDate(date1, user.getUserId());
+        // List<Stock> stockList = stockSvc.getUserStockListByDate(date1, userIdInt);
+        List<Stock> stockList = stockSvc.getUserStockListByDate(date, userIdInt);
+
         List<JsonObject> objectList = new LinkedList<>();
+        System.out.println(objectList);
+        JsonArrayBuilder builder = Json.createArrayBuilder();
+
 
         for (Stock stock : stockList){
             Double sharePrice = apiSvc.getQuote(stock.getSymbol());
             Double marketValue = sharePrice*stock.getQuantity();
-            objectList.add(Stock.toJson(stock, marketValue)); 
+            String companyName = apiSvc.getCompanyName(stock.getSymbol());
+
+            objectList.add(Stock.toJsonName(stock, companyName, marketValue)); 
+            System.out.println(objectList);
+            // builder.add(Stock.toJson(stock, marketValue));
+            builder.add(Stock.toJsonName(stock, companyName, marketValue));
+
         }
-        return ResponseEntity.ok().body(objectList.toString());
+        return ResponseEntity.ok().body(builder.build().toString());
     }
 
-    @GetMapping(path="company")
-    public ResponseEntity<String> getUserStockListBySymbol(@RequestParam String symbol, HttpSession sess){
+    @GetMapping(path="/company")
+    public ResponseEntity<String> getUserStockListBySymbol(@RequestParam String symbol, @RequestParam String userId){
 
-        String username = (String) sess.getAttribute("username");
-        String password = (String) sess.getAttribute("password");
+        JsonArrayBuilder builder = Json.createArrayBuilder();
 
-        User user = userRepo.getUser1(username, password);
+        Integer userIdInt = Integer.parseInt(userId);
 
-        List<Stock> stockList = stockSvc.getUserStockListByCompany(symbol, user.getUserId());
+        List<Stock> stockList = stockSvc.getUserStockListByCompany(symbol, userIdInt);
         List<JsonObject> objectList = new LinkedList<>();
 
         for (Stock stock : stockList){
             Double sharePrice = apiSvc.getQuote(stock.getSymbol());
             Double marketValue = sharePrice*stock.getQuantity();
-            objectList.add(Stock.toJson(stock, marketValue)); 
+            String companyName = apiSvc.getCompanyName(stock.getSymbol());
+
+            objectList.add(Stock.toJsonName(stock, companyName, marketValue)); 
             System.out.println(">>>>> " + objectList);
+            // builder.add(Stock.toJson(stock, marketValue));
+            builder.add(Stock.toJsonName(stock, companyName, marketValue));
+
         }
-        return ResponseEntity.ok().body(objectList.toString());
+        return ResponseEntity.ok().body(builder.build().toString());
     }
 
-    @PostMapping(path = "stockDeleted", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> deleteContact(@RequestBody String payload, HttpSession sess) throws ParseException{
-
-        String username = (String) sess.getAttribute("username");
-        String password = (String) sess.getAttribute("password");
-
-        User user = userRepo.getUser1(username, password);
+    @PostMapping(path = "/stockDeleted", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> deleteContact(@RequestBody String payload) throws ParseException{
 
         JsonReader reader = Json.createReader(new ByteArrayInputStream(payload.getBytes()));
         JsonObject obj;
@@ -325,25 +235,39 @@ public class UserRestController {
             resp.setMessage("Stock purchase successfully deleted");
         }
 
-        List<Stock> stockList = stockSvc.getUserStockList(user.getUserId());
-        List<JsonObject> objectList =new LinkedList<>();
+        return ResponseEntity
+                    .status(resp.getCode())
+                    .body(Response.toJson(resp).toString());
 
-        for (Stock stock1 : stockList){
+        // List<Stock> stockList = stockSvc.getUserStockList(user.getUserId());
+        // List<JsonObject> objectList =new LinkedList<>();
 
-            Double sharePrice = apiSvc.getQuote(stock1.getSymbol());
-            Double marketValue = sharePrice*stock1.getQuantity();
-            objectList.add(Stock.toJson(stock1, marketValue)); 
-        }
-        return ResponseEntity.ok().body(objectList.toString());
+        // for (Stock stock1 : stockList){
+
+        //     Double sharePrice = apiSvc.getQuote(stock1.getSymbol());
+        //     Double marketValue = sharePrice*stock1.getQuantity();
+        //     objectList.add(Stock.toJson(stock1, marketValue)); 
+        // }
+        // return ResponseEntity.ok().body(objectList.toString());
+    }
+
+    @GetMapping(path="/logout")
+    public ResponseEntity<String> logout(){
+
+        System.out.println(">>>>>Logging out!!!!");
+        Response resp = new Response();
+        resp.setCode(HttpStatus.OK.value());
+        resp.setMessage("Logged out successfully");
+
+        return ResponseEntity
+        .status(resp.getCode())
+        .body(Response.toJson(resp).toString());
+
     }
 
 
     
 
-    @GetMapping(path="logout")
-    public ResponseEntity<String> logout (HttpSession sess){
-        sess.invalidate();
-        return null;
-    }
+
    
 }
