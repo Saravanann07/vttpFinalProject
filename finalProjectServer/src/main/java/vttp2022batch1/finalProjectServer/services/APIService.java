@@ -3,6 +3,7 @@ package vttp2022batch1.finalProjectServer.services;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +24,8 @@ public class APIService {
     private static final String COMPANY_NAME_URL = "https://finnhub.io/api/v1/stock/profile2";
 
 
-
-     public String finnhubKey = "cdbssmiad3ibgg4mujggcdbssmiad3ibgg4mujh0";
+    @Value("${api.finnhub.key}")
+    private String finnhubKey;
  
      public Double getQuote(String symbol){
  
