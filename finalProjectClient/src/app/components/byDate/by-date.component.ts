@@ -14,12 +14,24 @@ export class ByDateComponent implements OnInit {
   stock!: Stock
   date!: string
   userId!: string;
+  username!: string 
+
+  imgSrc!: string 
 
   constructor(private stockSvc: StockService,
               private router: Router,
               private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
+
+    this.userId = this.activatedRoute.snapshot.params['userId']
+
+    this.username = localStorage.getItem('username')!
+    console.info(this.username)
+    
+
+    this.imgSrc = `https://saravttp.sgp1.digitaloceanspaces.com/users/${this.username}`;
+    console.log(this.imgSrc)
     this.date = this.activatedRoute.snapshot.queryParams['date']
     this.userId = this.activatedRoute.snapshot.params['userId']
 
@@ -40,7 +52,7 @@ export class ByDateComponent implements OnInit {
       const resp: Response = data;
       alert(resp.message);  
       console.info(this.date)      
-      this.router.navigate(['/homepage', this.userId])
+      this.router.navigate(['/byDate', this.userId], {queryParams: {date: stock.purchaseDate}})
       this.retrieveStockList()
     }).catch((error: any) => {
       const resp: Response = error;
@@ -49,10 +61,12 @@ export class ByDateComponent implements OnInit {
   }
 
   private retrieveStockList(){
-    this.stockSvc.getStocksByDate(this.stock.purchaseDate, this.userId)
+    this.date = this.activatedRoute.snapshot.queryParams['date']
+    console.info('*******, '+this.date)
+    this.stockSvc.getStocksByDate(this.userId, this.date)
       .then(data => {
         this.stockListDate = data
-        this.router.navigate(['/homepage', this.userId])
+        this.router.navigate(['/byDate', this.userId], {queryParams: {date: this.date}})
       }).catch(error =>{
         console.info('>>>>>. Error!')
       })

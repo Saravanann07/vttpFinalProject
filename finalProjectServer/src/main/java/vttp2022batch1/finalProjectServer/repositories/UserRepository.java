@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.encrypt.BytesEncryptor;
 import org.springframework.stereotype.Repository;
 
 import vttp2022batch1.finalProjectServer.models.AppUser;

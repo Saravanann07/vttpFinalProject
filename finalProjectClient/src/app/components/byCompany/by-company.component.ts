@@ -40,24 +40,27 @@ export class ByCompanyComponent implements OnInit {
     this.stockSvc.deleteStock(stock, stock.userId)
     .then((data: any) => {
       const resp: Response = data;
-      alert(resp.message);        
-      this.router.navigate(['/byCompany', this.userId])
-      // this.retrieveStockList()
+      alert(resp.message);  
+      console.info(stock.symbol)      
+      this.router.navigate(['/byCompany', this.userId], {queryParams: {symbol: stock.symbol}})
+      this.retrieveStockList()
     }).catch((error: any) => {
       const resp: Response = error;
       alert(resp.message)
     })
   }
 
-  // private retrieveStockList(){
-  //   this.stockSvc.getStocksBySymbol(this.stock.symbol, this.userId)
-  //     .then(data => {
-  //       this.stockListSymbol = data
-  //       this.router.navigate(['/byCompany'])
-  //     }).catch(error =>{
-  //       console.info('>>>>> Error!')
-  //     })
-  // }
+  private retrieveStockList(){
+    this.symbol = this.activatedRoute.snapshot.queryParams['symbol']
+    console.info("^^^^^"+this.symbol)
+    this.stockSvc.getStocksBySymbol(this.symbol, this.userId)
+      .then(data => {
+        this.stockListSymbol = data
+        this.router.navigate(['/byCompany', this.userId], {queryParams: {symbol: this.symbol}})
+      }).catch(error =>{
+        console.info('>>>>> Error!')
+      })
+  }
   goHomePage(){
     this.router.navigate(['/homepage', localStorage.getItem('userId')])
   }

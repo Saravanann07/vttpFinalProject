@@ -1,3 +1,13 @@
+<p>
+    <mat-toolbar color="primary" style="height:90px;" > 
+      <div style="text-align: center; margin:0 auto; font-size: 70px;">
+        <span >StockStatuss</span>
+      </div>
+    </mat-toolbar>
+</p>
+
+<img [src]="this.imgSrc"  alt="profile picture">
+
 <h3>Here are your stock purchase by Date</h3>
 <table class="table">
     <thead>
@@ -10,6 +20,8 @@
             <th>Stock Price (US$)</th>
             <th>Total Price (US$)</th>
             <th>Stock Value (US$)</th>
+            <th>Stock Status</th>
+            
             <th></th>
         </tr>
     </thead>
@@ -24,6 +36,9 @@
             <td> {{ stock.stockPrice }}</td>
             <td> {{ stock.totalPrice }}</td>
             <td> {{ stock.stockValue }}</td>
+            <td *ngIf = "stock.totalPrice <= stock.stockValue then profit else loss"></td>
+            <ng-template #profit><td bgcolor="green"></td></ng-template>
+            <ng-template #loss><td bgcolor="red"></td></ng-template>
             <td><button type="button" (click)="deleteStock(stock)">X</button></td>
         </tr>
     </tbody>

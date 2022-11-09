@@ -59,7 +59,7 @@ export class AddStockComponent implements OnInit {
       const resp: Response = data;
       alert(resp.message)
       this.createForm()
-      this.router.navigate(['/homepage', this.userId])
+      // this.router.navigate(['/homepage', this.userId])
     }).catch((error: any) => {
       const resp: Response = error;
       alert(resp.message)

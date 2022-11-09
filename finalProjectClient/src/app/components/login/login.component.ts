@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
     this.userSvc.login(user)
       .then ((data: any) => {
         const resp: Response = data;
-        alert(resp.message)
+        alert('Login Successful!')
         this.router.navigate(['/homepage', localStorage.getItem('userId')])
       }).catch((error: any) => {
         const resp: Response = error;

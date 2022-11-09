@@ -26,7 +26,8 @@ public class EmailServiceImpl {
             mailMessage.setText("""
                                     Dear %s,
                                     
-                                    Welcome to stockstatus. Please access the site at URL and start adding your stock purchases!
+                                    Welcome to stockstatus. Thank you for registering with us. 
+                                    Please access the site at https://stockstatuss.herokuapp.com/ and start adding your stock purchases!
                                     
                                     Regards,
                                     StockStatus Team""".formatted(username));

@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WelcomeComponent implements OnInit {
 
-  logo: string = '/assets/stockStatusLogo.png'
+  logo: string = 'https://saravttp.sgp1.digitaloceanspaces.com/logo/stock-trading-app.png'
 
   constructor() { }
 

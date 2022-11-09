@@ -1,3 +1,11 @@
+<p>
+    <mat-toolbar color="primary" style="height:90px;" > 
+      <div style="text-align: center; margin:0 auto; font-size: 70px;">
+        <span >StockStatuss</span>
+      </div>
+    </mat-toolbar>
+  </p>
+
 <h2>Add your stock purchase here!</h2>
 <form [formGroup]="form" (ngSubmit)="stockAdded()">
     <table>
@@ -34,13 +42,13 @@
                 </td>
             </tr>
             <tr>
-                <td>Stock Price:</td>
+                <td>Stock Price (US$):</td>
                 <td>
                     <input type="number" formControlName="stockPrice">
                 </td>
             </tr>
             <tr>
-                <td>Total Price: </td>
+                <td>Total Price (US$): </td>
                 <td>
                     <input type="number" [value]="form.get('quantity')!.value * form.get('stockPrice')!.value" formControlName="totalPrice">
                 </td>

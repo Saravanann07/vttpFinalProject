@@ -1,0 +1,16 @@
+.mat-row:hover td::before {
+    border-color: black;
+  }
+
+table {
+    width: 95%;
+  }
+
+img {
+    width: 100px;
+    height: 90px;
+    border-radius: 50%;
+    position: absolute;
+    right:10px;
+    top: 0px;;
+}

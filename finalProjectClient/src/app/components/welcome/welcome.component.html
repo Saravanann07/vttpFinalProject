@@ -1,7 +1,7 @@
 <p>
   <mat-toolbar color="primary"> 
     <div style="text-align: center; margin:0 auto;">
-      <span >StockStatus</span>
+      <span >StockStatuss</span>
     </div>
   </mat-toolbar>
 </p>
@@ -11,15 +11,28 @@
   <h1>Welcome to StockStatus</h1>
 </div>
 
-<img [src]="logo" alt="">
+<div style="text-align: center;">
+  <img [src]="logo" alt="StockStatus Logo" class="centre" >
+</div>
+<br>
+<!-- <div style="text-align: center; margin:0 auto;">
+ <table>
+    <tbody>
+      <tr>
+        <td><button mat-raised-button color="primary" [routerLink]="['login']">Login</button></td>
+        <td><button mat-raised-button color="primary" type="button" [routerLink]="['register']">Register</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div> -->
+<div class="flex-parent jc-center">
+<button class = "margin-right" style =" font-size: 20px; width: 100px; height: 50px" mat-raised-button color="primary" [routerLink]="['login']">Login</button>
+<button style =" font-size: 20px; width: 100px; height: 50px" mat-raised-button color="primary" type="button" [routerLink]="['register']">Register</button>
+</div>
 
-<table>
-  <tbody>
-    <tr>
-      <td><button mat-raised-button color="primary" [routerLink]="['login']">Login</button></td>
-      <td><button mat-raised-button color="primary" type="button" [routerLink]="['register']">Register</button></td>
+ 
 
-    </tr>
-  </tbody>
-</table>
+
+
+
 
