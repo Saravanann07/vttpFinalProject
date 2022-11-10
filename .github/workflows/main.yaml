@@ -1,16 +1,19 @@
 name: Deploy to heroku
 on: 
   push:
-    branches: [jwt]
+    branches: 
+      - jwt
 jobs:
   deploy-heroku:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: akhileshns/heroku-deploy@v3.12.12 
+      - name: CHeckout src
+        uses: actions/checkout@v3
+      - name: Deploy
+        uses: akhileshns/heroku-deploy@v3.12.12 
         with:
           heroku_api_key: ${{ secrets.heroku_api_key }}
-          heroku_app_name: stockstatuss
+          heroku_app_name: "stockstatuss"
           heroku_email: ${{ secrets.heroku_email }}
           branch: ${{ github.ref_name }}
-          appdir: finalProjectServer
+          appdir: "finalProjectServer"
