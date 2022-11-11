@@ -1,8 +1,81 @@
-img {
+table {
+    width: 95%;
+  }
+
+.pp {
     width: 100px;
     height: 90px;
     border-radius: 50%;
     position: absolute;
     right:10px;
     top: 0px;;
+}
+
+.left{
+    width: 500px;
+    height: 500px;
+    float: left;
+    margin-left: 2px;
+    
+}
+.right{
+    width: 500px;
+    height: 500px;
+    float: right;
+    margin-right: 2px;
+    position: absolute;
+    right:150px;
+    top: 260px;
+
+    
+}
+
+div {
+  text-align: center;
+  padding: 65px;
+}
+
+mat-card {
+  border: 1px solid black;
+  width: 350px;   
+  height: 400px;
+  justify-content: center;
+  position: fixed;
+  left: 50%;
+  bottom: 50px;
+  transform: translate(-50%, -50%);
+  margin: 0 auto;
+  /* position: absolute;
+  left: 800px;
+  top: 350px; */
+  
+}
+
+.form {
+    border: 1px solid black;
+    width: 350px;   
+    height: 300px;
+    justify-content: center;
+    align-items: center; 
+  }
+
+.title_center {
+  display: flex;
+  justify-content: center; /* align horizontal */
+  align-items: center; /* align vertical */
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 10px;
+}
+
+.buttons {
+  display: flex;   
+  justify-content: center;
+  position: fixed;
+  left: 50%;
+  bottom: 10px;
+  transform: translate(-50%, -50%);
+  margin: 0 auto;
 }

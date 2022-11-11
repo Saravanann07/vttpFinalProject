@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -24,7 +24,8 @@ export class LoginComponent implements OnInit {
               private userSvc: UserService,
               private router: Router,
               private snackBar: MatSnackBar,
-              private snackBarSvc: SnackbarService) { }
+              private snackBarSvc: SnackbarService,
+              private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
 
@@ -44,15 +45,16 @@ export class LoginComponent implements OnInit {
     this.userSvc.login(user)
       .then ((data: any) => {
         const resp: Response = data;
-        this.snackBarSvc.displayMessage('LOGIN_SUCCESSFUL', 'greenyellow');
-        this.snackBar.openFromComponent(SnackbarComponent, {duration: 3000, verticalPosition: 'bottom'});
-        alert('Login Successful!')
+        this.snackBarSvc.displayMessage('LOGIN_SUCCESSFUL', 'green');
+        this.snackBar.openFromComponent(SnackbarComponent, {duration: 3000, verticalPosition: 'bottom'})
+        .afterDismissed()
+        // alert('Login Successful!')
         this.router.navigate(['/homepage', localStorage.getItem('userId')])
       }).catch((error: any) => {
         const resp: Response = error;
-        this.snackBarSvc.displayMessage('INVALID_CREDENTIALS', 'hotpink')
-        this.snackBar.openFromComponent(SnackbarComponent, {duration: 3000, verticalPosition: 'top'});
-        alert('Error Logging in. Please try again')
+        this.snackBarSvc.displayMessage('INVALID_CREDENTIALS', 'red')
+        this.snackBar.openFromComponent(SnackbarComponent, {duration: 3000, verticalPosition: 'bottom'});
+        // alert('Error Logging in. Please try again')
       })
      
       this.onLogin.next(user)

@@ -1,4 +1,105 @@
-<p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>
+        <mat-toolbar color="primary" style="height:90px;" > 
+          <div style="text-align: center; margin:0 auto; font-size: 60px;">
+            <span >StockStatuss</span>
+          </div>
+        </mat-toolbar>
+    </p>
+    <br>
+    <br>
+    <h2 style="text-align:center; font-size: 30px;">Add your stock purchases here</h2>
+    <img [src]="this.imgSrc" class="pp" alt="profile picture">
+
+    <div>
+        <div class="left">
+            <img [src]="logo"  alt="">
+        </div>
+        <div style="display: flex; justify-content: center;">
+        <mat-card>
+            <mat-card-header class="title_center">
+                <mat-card-title>
+                    Add here
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <form [formGroup]="form" (ngSubmit)="stockAdded()">
+                    <table>
+                        <thead>
+                            <tr><th style="width: 50%;"></th></tr>
+                            <tr style="text-align: centre;">
+                            </tr>
+                        </thead>
+                        <br>
+                        <tbody>
+                            <tr>
+                                <td>Purchase Date:</td>
+                                <td>
+                                    <input type="date" formControlName="purchaseDate">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Symbol:</td>
+                                <td>
+                                    <input type="text" formControlName="symbol">
+                                </td>
+                            </tr> 
+                            <tr>
+                                <td>Quantity:</td>
+                                <td>
+                                    <input type="number" formControlName="quantity">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Stock Price (US$):</td>
+                                <td>
+                                    <input type="number" formControlName="stockPrice">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Total Price (US$): </td>
+                                <td>
+                                    <input type="number" [value]="form.get('quantity')!.value * form.get('stockPrice')!.value" formControlName="totalPrice">
+                                </td>
+                            </tr>
+                            <br>
+                            <tr>
+                                <td></td>
+                                <td><button mat-raised-button color="primary" style="font-size: 20px;" type="submit" [disabled]="form.invalid">Add</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="right">
+        <img [src]="logo"  alt="">
+    </div>
+    </div>
+
+    <div class="buttons">
+        <button mat-raised-button color="primary" style="margin-right: 2%;  font-size: 20px;" type ="button" [routerLink]="['/homepage', userId]">Back</button>
+        <button mat-raised-button color="warn" style="margin-right: 2%; font-size: 20px;" type="button" (click)="userLogout()">Logout</button>
+      </div>
+
+
+    
+</body>
+</html>
+
+<!-- <p>
     <mat-toolbar color="primary" style="height:90px;" > 
       <div style="text-align: center; margin:0 auto; font-size: 70px;">
         <span >StockStatuss</span>
@@ -28,14 +129,14 @@
                 <td>
                     <input type="text" formControlName="symbol">
                 </td>
-            </tr>
+            </tr> -->
             <!-- <tr>
                 <td>Company Name:</td>
                 <td>
                     <input type="text" formControlName="companyName">
                 </td>
             </tr> -->
-            <tr>
+            <!-- <tr>
                 <td>Quantity:</td>
                 <td>
                     <input type="number" formControlName="quantity">
@@ -62,4 +163,4 @@
     </table>
 </form>
 <button type ="button" [routerLink]="['/homepage', userId]">Back</button>
-
+ -->

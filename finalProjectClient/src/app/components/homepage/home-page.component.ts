@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Title } from '@angular/platform-browser';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { skip, Subject } from 'rxjs';
-import { Stock, Response } from 'src/app/models/model';
+import { Subject } from 'rxjs';
+import { Response, Stock } from 'src/app/models/model';
+import { SnackbarService } from 'src/app/Service/snackbar.service';
 import { StockService } from 'src/app/Service/stock.service';
 import { UserService } from 'src/app/Service/user.service';
+import { SnackbarComponent } from '../snackbar/snackbar.component';
 
 @Component({
   selector: 'app-home-page',
@@ -34,6 +36,8 @@ export class HomePageComponent implements OnInit {
               private router: Router,
               private activatedRoute: ActivatedRoute,
               private fb: FormBuilder,
+              private snackBar: MatSnackBar,
+              private snackBarSvc: SnackbarService
               ) { }
 
   ngOnInit(): void {
@@ -65,6 +69,8 @@ export class HomePageComponent implements OnInit {
     localStorage.removeItem('userId')     
     localStorage.removeItem('username')
     this.router.navigate([''])
+    this.snackBarSvc.displayMessage('LOGOUT_SUCCESSFUL', 'greenyellow');
+    this.snackBar.openFromComponent(SnackbarComponent, {duration: 3000, verticalPosition: 'bottom'})
 }
 
   createForm(){

@@ -14,6 +14,10 @@ export class ByCompanyComponent implements OnInit {
   stock!: Stock
   userId!: string;
   symbol!: string;
+  imgSrc!: string 
+  username!: string 
+
+
 
 
   constructor(private stockSvc: StockService,
@@ -25,6 +29,9 @@ export class ByCompanyComponent implements OnInit {
     this.symbol = this.activatedRoute.snapshot.queryParams['symbol']
     console.info(this.userId)
     console.info(this.symbol)
+    this.username = localStorage.getItem('username')!
+    this.imgSrc = `https://saravttp.sgp1.digitaloceanspaces.com/users/${this.username}`;
+
     
     this.stockSvc.getStocksBySymbol(this.symbol, this.userId)
       .then(data => {

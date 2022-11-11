@@ -18,6 +18,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
 import { SnackbarService } from './Service/snackbar.service';
+import { ChangeDetectorRef } from '@angular/core';
+
 
 
 

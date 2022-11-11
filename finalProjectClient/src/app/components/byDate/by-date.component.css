@@ -1,3 +1,11 @@
+.mat-row:hover td::before {
+    border-color: black;
+  }
+
+table {
+    width: 95%;
+  }
+
 img {
     width: 100px;
     height: 90px;
@@ -5,4 +13,21 @@ img {
     position: absolute;
     right:10px;
     top: 0px;;
+}
+
+div {
+  text-align: center;
+  padding: 65px;
+}
+
+mat-card {
+  border: 1px solid black;
+  width: 350px;   
+  height: 100px 
+}
+
+.title_center {
+  display: flex;
+  justify-content: center; /* align horizontal */
+  align-items: center; /* align vertical */
 }

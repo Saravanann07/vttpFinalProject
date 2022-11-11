@@ -21,6 +21,15 @@ export class AddStockComponent implements OnInit {
 
   stockUserId!: number
 
+  username!: string 
+
+  imgSrc!: string 
+
+  logo: string = 'https://saravttp.sgp1.digitaloceanspaces.com/logo/stock-trading-app%20%281%29.png'
+
+
+ 
+
 
   form!: FormGroup
 
@@ -31,6 +40,10 @@ export class AddStockComponent implements OnInit {
               ) { }
 
   ngOnInit(): void {
+
+    this.username = localStorage.getItem('username')!
+    console.info(this.username)
+    this.imgSrc = `https://saravttp.sgp1.digitaloceanspaces.com/users/${this.username}`;
     this.createForm()
     this.userId = localStorage.getItem('userId')!;
   
@@ -73,5 +86,12 @@ export class AddStockComponent implements OnInit {
   goHomePage(userId: string){
     this.router.navigate(['/homepage', this.userId])
   }
+
+  userLogout(){
+    localStorage.removeItem('token')
+    localStorage.removeItem('userId')     
+    localStorage.removeItem('username')
+    this.router.navigate([''])
+}
 
 }

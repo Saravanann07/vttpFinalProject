@@ -38,7 +38,9 @@ export class UserService {
 
 
 
-  constructor(private httpClient: HttpClient ) { }
+  constructor(private httpClient: HttpClient,
+              private snackBar: MatSnackBar,
+              private snackBarSvc: SnackbarService ) { }
 
   registration(formData: FormData): Promise<Response>{
 
