@@ -14,3 +14,20 @@ img {
     right:10px;
     top: 0px;;
 }
+
+div {
+  text-align: center;
+  padding: 65px;
+}
+
+mat-card {
+  border: 1px solid black;
+  width: 350px;   
+  height: 100px 
+}
+
+.title_center {
+  display: flex;
+  justify-content: center; /* align horizontal */
+  align-items: center; /* align vertical */
+}

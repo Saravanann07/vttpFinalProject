@@ -1,97 +1,123 @@
-<p>
-    <mat-toolbar color="primary" style="height:90px;" > 
-      <div style="text-align: center; margin:0 auto; font-size: 70px;">
-        <span >StockStatuss</span>
-      </div>
-    </mat-toolbar>
-</p>
-
-
-
-<h2 style="text-align:center; font-size: 30px;">Welcome to StockStatuss {{ username }} !</h2>
-<h3 style="text-align:center; font-size: 20px;">Track your stock purchases below</h3>
-
-<img [src]="this.imgSrc"  alt="profile picture">
-
-<table mat-table class="mat-elevation-z8" style="margin:auto">
-    <thead>
-        <tr style="text-align: center;">
-            <th>#</th>
-            <th>Purchase Date</th>
-            <th>Symbol</th>
-            <th>Company Name</th>
-            <th>Quantity</th>
-            <th>Stock Price (US$)</th>
-            <th>Total Price (US$)</th>
-            <th> Total Stock Purchase Value (US$)</th>
-            <th> Stock Status</th>
-            <th></th>
-        </tr>
-    </thead>
-
-    <tbody>
-        <tr *ngFor="let stock of stockList; let idx = index;" style="text-align:center">
-            <td> {{ idx + 1 }}</td>
-            <td> {{ stock.purchaseDate }}</td>
-            <td> {{ stock.symbol }}</td>
-            <td> {{ stock.companyName }}</td>
-            <td> {{ stock.quantity }}</td>
-            <td> {{ stock.stockPrice }}</td>
-            <td> {{ stock.totalPrice }}</td>
-            <td> {{ stock.stockValue }}</td>
-            <td *ngIf = "stock.totalPrice <= stock.stockValue then profit else loss"></td>
-            <ng-template #profit><td bgcolor="green"></td></ng-template>
-            <ng-template #loss><td bgcolor="red"></td></ng-template>
-       
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>
+        <mat-toolbar color="primary" style="height:90px;" > 
+          <div style="text-align: center; margin:0 auto; font-size: 60px;">
+            <span >StockStatuss</span>
+          </div>
+        </mat-toolbar>
+    </p>
+    
+    
+    
+    <h2 style="text-align:center; font-size: 30px;">Welcome to StockStatuss {{ username }} !</h2>
+    <h3 style="text-align:center; font-size: 20px;">Track your stock purchases below</h3>
+    
+    <img [src]="this.imgSrc"  alt="profile picture">
+    
+    <table mat-table class="mat-hover" class="table table-hover" style="margin:auto">
+        <thead>
+            <tr style="text-align: center;">
+                <th>#</th>
+                <th>Purchase Date (YYYY-MM-DD)</th>
+                <th>Symbol</th>
+                <th>Company Name</th>
+                <th>Quantity</th>
+                <th>Stock Purchase Price (US$)</th>
+                <th>Total Purchase Price (US$) *</th>
+                <th> Stock Purchase Value (US$) **</th>
+                <th> Stock Status ***</th>
+                <th></th>
+            </tr>
+        </thead>
+    
+        <tbody>
+            <tr *ngFor="let stock of stockList; let idx = index;" style="text-align:center; vertical-align: middle;">
+                <td  > {{ idx + 1 }}</td>
+                <td> {{ stock.purchaseDate }}</td>
+                <td> {{ stock.symbol }}</td>
+                <td> {{ stock.companyName }}</td>
+                <td> {{ stock.quantity }}</td>
+                <td> {{ stock.stockPrice }}</td>
+                <td style="text-align: center"> {{ stock.totalPrice }}</td>
+                <td> {{ stock.stockValue }}</td>
+                <td *ngIf = "stock.totalPrice <= stock.stockValue then profit else loss"></td>
+                <ng-template #profit><td bgcolor="green"m style="background-color: green; font-weight: bold;">Profit</td></ng-template>
+                <ng-template #loss><td bgcolor="red" style="background-color: red; font-weight: bold;">Loss</td></ng-template>
            
-         
-            <td><button type="button" mat-icon-button matTooltip="Click to Delete" class="iconbutton" (click)="deleteStock(stock)" color="warn">
-                <mat-icon>delete</mat-icon></button></td>
-        </tr>
-    </tbody>
-</table>
+               
+             
+                <td><button type="button" mat-icon-button matTooltip="Click to Delete" class="iconbutton" (click)="deleteStock(stock)" color="warn">
+                    <mat-icon>delete</mat-icon></button></td>
+            </tr>
+        </tbody>
+    </table>
+<div style="display: flex;   justify-content: center;">
+    <mat-card style="margin-right: 2%">
+        <mat-card-header class="title_center">
+            <mat-card-title>Search by Company Symbol</mat-card-title>
+            <mat-icon style="margin-top: -0.5em;">work</mat-icon>
+        </mat-card-header>
+        <mat-card-content style="margin:auto" class="title_center">
+            <form [formGroup]="form" (ngSubmit)="bySymbol()">
+                <tbody>
+                    <tr>
+                        <td style="font-size: 15px;" >Symbol</td>
+                        <td width="15px"></td>
+                       
+                        <td>
+                            <input type="text" formControlName="symbol">
+                        </td>
+                        <td width="5px"></td>
+                        <td><button type="submit" [disabled]="form.invalid">Search</button></td>
+                    </tr>
+                </tbody>
+            </form>
+        </mat-card-content>
+    </mat-card>
 
-<h3>Search by Company Symbol</h3>
-<form [formGroup]="form" (ngSubmit)="bySymbol()">
-    <tbody>
-        <tr>
-            <td>Symbol:</td>
-            <td>
-                <input type="text" formControlName="symbol">
-            </td>
-        </tr>
-        <br>
-        <tr>
-            <td><button type="submit" [disabled]="form.invalid">Search</button></td>
-        </tr>
-    </tbody>
-</form>
-
-<h3>Search by Date</h3>
-<form [formGroup]="dateForm" (ngSubmit)="byDate()">
-    <tbody>
-        <tr>
-            <td>Date:</td>
-            <td>
-                <input type="text" formControlName="purchaseDate">
-            </td>
-        </tr>
-        <br>
-        <tr>
-            <td><button type="submit" [disabled]="dateForm.invalid">Search</button></td>
-        </tr>
-    </tbody>
-</form>
-<br>
-<br>
-
-<button type="button" [routerLink]="[ '/addStock', userId ]">Add Stock Purchases</button>
-<br>
-<br>
-<br>
-<div>
-<button type="button" (click)="userLogout()">Logout</button>
+        <mat-card>
+            <mat-card-header class="title_center">
+                <mat-card-title>Search by Date</mat-card-title>
+                <mat-icon style="margin-top: -0.5em;">date_range</mat-icon>
+            </mat-card-header>
+            <mat-card-content style="margin:auto" class="title_center">
+                <form [formGroup]="dateForm" (ngSubmit)="byDate()">
+                    <tbody>
+                        <tr>
+                            <td style="font-size: 15px;" >Date</td>
+                            <td width="15px"></td>
+                           
+                            <td>
+                                <input type="date" formControlName="purchaseDate">
+                            </td>
+                            <td width="5px"></td>
+                            <td><button type="submit" [disabled]="dateForm.invalid">Search</button></td>
+                        </tr>
+                    </tbody>
+                </form>
+            </mat-card-content>
+        </mat-card>
+   
+    
 </div>
 
+
+<div style="display: flex;   justify-content: center;">
+    <button mat-raised-button color="primary" style="margin-right: 2%;  font-size: 20px;" type="button" [routerLink]="[ '/addStock', userId ]">Add Stock Purchases</button>   
+    <button mat-raised-button color="warn" style="margin-right: 2%; font-size: 20px;" type="button" (click)="userLogout()">Logout</button>
+</div>
+     
+</body>
+</html>
 
 

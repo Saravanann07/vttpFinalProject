@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { skip, Subject } from 'rxjs';
 import { Stock, Response } from 'src/app/models/model';
@@ -32,9 +33,11 @@ export class HomePageComponent implements OnInit {
               private userSvc: UserService,
               private router: Router,
               private activatedRoute: ActivatedRoute,
-              private fb: FormBuilder) { }
+              private fb: FormBuilder,
+              ) { }
 
   ngOnInit(): void {
+
 
     this.userId = this.activatedRoute.snapshot.params['userId']
 

@@ -1,7 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, firstValueFrom, map, Subject } from 'rxjs';
-import { jwtResponse, Stock, User, Response } from '../models/model';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { firstValueFrom, map, Subject } from 'rxjs';
+import { SnackbarComponent } from '../components/snackbar/snackbar.component';
+import { jwtResponse, Response, User } from '../models/model';
+import { SnackbarService } from './snackbar.service';
 
 // IMPT!!!!
 // Remember to replace URLs with heroku URLs before deploying to vercel
@@ -35,7 +38,7 @@ export class UserService {
 
 
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient ) { }
 
   registration(formData: FormData): Promise<Response>{
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { Stock, Response } from 'src/app/models/model';
@@ -26,7 +27,8 @@ export class AddStockComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private stocKSvc: StockService,
               private router: Router,
-              private activatedRoute: ActivatedRoute) { }
+              private activatedRoute: ActivatedRoute,
+              ) { }
 
   ngOnInit(): void {
     this.createForm()

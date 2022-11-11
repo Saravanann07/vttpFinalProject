@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { UserService } from './Service/user.service';
@@ -16,6 +16,9 @@ import { RegisterComponent } from './components/register/register.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
+import { SnackbarComponent } from './components/snackbar/snackbar.component';
+import { SnackbarService } from './Service/snackbar.service';
+
 
 
 const appRoutes: Routes = [
@@ -39,15 +42,16 @@ const appRoutes: Routes = [
     ByDateComponent,
     ByCompanyComponent,
     WelcomeComponent,
-    AddStockComponent
+    AddStockComponent,
+    SnackbarComponent
   ],
   imports: [
     BrowserModule, FormsModule, ReactiveFormsModule, 
     HttpClientModule, RouterModule.forRoot(appRoutes, {useHash: true}), 
-    MaterialModule
+    MaterialModule, BrowserAnimationsModule
     
   ],
-  providers: [UserService, StockService],
+  providers: [UserService, StockService, SnackbarService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
