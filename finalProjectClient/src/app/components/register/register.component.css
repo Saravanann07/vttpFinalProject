@@ -41,3 +41,14 @@ body{
     margin-left: 0;
     margin-right: 0;
 }
+
+input
+{
+    display: block;
+}
+
+p
+{
+    font-weight: bold;
+    color: red;
+}

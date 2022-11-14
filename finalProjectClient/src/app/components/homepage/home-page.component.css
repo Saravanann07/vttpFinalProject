@@ -16,14 +16,18 @@ img {
 }
 
 div {
+  display: flex;
+  justify-content: center; /* align horizontal */
+
   text-align: center;
   padding: 65px;
 }
 
 mat-card {
   border: 1px solid black;
-  width: 350px;   
-  height: 100px 
+  width: 400px;   
+  height: 100px;
+  
 }
 
 .title_center {
@@ -31,3 +35,15 @@ mat-card {
   justify-content: center; /* align horizontal */
   align-items: center; /* align vertical */
 }
+
+/* .parent {
+  text-align: center;
+  display: flex;
+  padding: 65px; */
+  /* display: block; */
+  /* margin-left: auto;
+  margin-right: auto;
+} */
+/* .child {
+  padding: 20px;
+} */

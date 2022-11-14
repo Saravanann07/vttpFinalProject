@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { User, Response } from 'src/app/models/model';
@@ -17,6 +17,11 @@ export class RegisterComponent implements OnInit {
   form!: FormGroup
 
   photo!:File
+
+  fileFormat!: string
+
+  fileError!: boolean
+
 
   
 
@@ -70,6 +75,11 @@ export class RegisterComponent implements OnInit {
     console.log(event.target.files[0])
     this.photo = event.target.files[0]
     console.log(this.photo)
+    this.fileFormat = this.photo.type
+    console.info(this.fileFormat)
+
+    this.fileError = (this.fileFormat !== 'image/jpeg')
+    console.log(this.fileError)
 
     
     
@@ -79,6 +89,15 @@ export class RegisterComponent implements OnInit {
     // the uploaded image is valid
 
     const blankFile: File = new File([], '');
+    if (this.fileError){
+      alert("File is in wrong format!. Please only upload JPEG files!")
+      this.form.controls['profilePic'].setValue(this.photo, {emitEvent: false});
+    }
+    else{
+      // this.fileError = false
+      console.log(this.fileError)
+    console.info('>>>> Correct format')
     this.form.controls['profilePic'].setValue(this.photo) // File itself
+    }
   }
 }

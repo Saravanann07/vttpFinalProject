@@ -45,7 +45,8 @@ const appRoutes: Routes = [
     ByCompanyComponent,
     WelcomeComponent,
     AddStockComponent,
-    SnackbarComponent
+    SnackbarComponent,
+    
   ],
   imports: [
     BrowserModule, FormsModule, ReactiveFormsModule, 
