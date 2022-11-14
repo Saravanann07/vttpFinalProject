@@ -4,6 +4,9 @@
 
 table {
     width: 95%;
+    /* width: fit-content; */
+    /* margin: 0; */
+
   }
 
 img {
@@ -17,16 +20,20 @@ img {
 
 div {
   display: flex;
-  justify-content: center; /* align horizontal */
+  justify-content: center;
 
-  text-align: center;
+  /* text-align: center; */
   padding: 65px;
 }
 
 mat-card {
+  margin: 0;
   border: 1px solid black;
   width: 400px;   
   height: 100px;
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
   
 }
 
@@ -47,3 +54,17 @@ mat-card {
 /* .child {
   padding: 20px;
 } */
+
+/* body{
+  margin: 0;
+  font-size: .9rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #212529;
+  text-align: left;
+  background-color: #f5f8fa;
+} */
+p {
+  margin-left: 50px;
+  font-weight:  bold;
+}

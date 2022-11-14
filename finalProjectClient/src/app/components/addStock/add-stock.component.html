@@ -9,13 +9,15 @@
     <title>Document</title>
 </head>
 <body>
-    <p>
+    
+    <p class="toolbar">
         <mat-toolbar color="primary" style="height:90px;" > 
           <div style="text-align: center; margin:0 auto; font-size: 60px;">
             <span >StockStatuss</span>
           </div>
         </mat-toolbar>
     </p>
+
     <br>
     <br>
     <h2 style="text-align:center; font-size: 30px;">Add your stock purchases here</h2>
@@ -53,7 +55,7 @@
                             <tr>
                                 <td>Symbol:</td>
                                 <td>
-                                    <input type="text" formControlName="symbol">
+                                    <input type="text" placeholder="E.g. V,  META,  TSLA" formControlName="symbol">
                                 </td>
                             </tr> 
                             <tr>
@@ -91,7 +93,7 @@
     </div>
     </div>
 
-    <div style="text-align: center;">
+    <div class="buttons">
         <button mat-raised-button color="primary" style=" margin-right: 2%;  font-size: 20px;" type ="button" [routerLink]="['/homepage', userId]">Back</button>
         <button mat-raised-button color="warn" style="margin-right: 2%; font-size: 20px;" type="button" (click)="userLogout()">Logout</button>
       </div>
