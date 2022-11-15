@@ -1,7 +1,5 @@
 package vttp2022batch1.finalProjectServer.models;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 
@@ -12,10 +10,6 @@ public class AppUser {
     String username;
     String password;
 
-    //In registration model include
-    MultipartFile profilePic;
-
-    // byte[] profilePic;
 
     public Integer getUserId() {return this.userId;}
     public void setUserId(Integer userId) {this.userId = userId;}
@@ -31,11 +25,7 @@ public class AppUser {
     public void setPassword(String password) {this.password = password;}
 
 
-    // public String getMediaType() {return this.mediaType;}
-    // public void setMediaType(String mediaType) {this.mediaType = mediaType;}
 
-    // public byte[] getProfilePic() {return this.profilePic;}
-    // public void setProfilePic(byte[] profilePic) {this.profilePic = profilePic;}
 
 
 

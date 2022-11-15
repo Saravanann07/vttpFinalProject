@@ -24,8 +24,7 @@ export class LoginComponent implements OnInit {
               private userSvc: UserService,
               private router: Router,
               private snackBar: MatSnackBar,
-              private snackBarSvc: SnackbarService,
-              private cdr: ChangeDetectorRef) { }
+              private snackBarSvc: SnackbarService) { }
 
   ngOnInit(): void {
 
@@ -45,16 +44,14 @@ export class LoginComponent implements OnInit {
     this.userSvc.login(user)
       .then ((data: any) => {
         const resp: Response = data;
-        this.snackBarSvc.displayMessage('LOGIN_SUCCESSFUL', 'green');
-        this.snackBar.openFromComponent(SnackbarComponent, {duration: 3000, verticalPosition: 'bottom'})
+        this.snackBarSvc.displayMessage('LOGIN_SUCCESSFUL', 'yellowgreen');
+        this.snackBar.openFromComponent(SnackbarComponent, {duration: 3000, verticalPosition: 'top'})
         .afterDismissed()
-        // alert('Login Successful!')
         this.router.navigate(['/homepage', localStorage.getItem('userId')])
       }).catch((error: any) => {
         const resp: Response = error;
         this.snackBarSvc.displayMessage('INVALID_CREDENTIALS', 'red')
-        this.snackBar.openFromComponent(SnackbarComponent, {duration: 3000, verticalPosition: 'bottom'});
-        // alert('Error Logging in. Please try again')
+        this.snackBar.openFromComponent(SnackbarComponent, {duration: 3000, verticalPosition: 'top'});
       })
      
       this.onLogin.next(user)

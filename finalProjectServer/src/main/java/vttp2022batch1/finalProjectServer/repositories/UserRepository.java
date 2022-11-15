@@ -22,6 +22,8 @@ public class UserRepository {
 
     public static final String SQL_CHECK_USER_EXISTS = "select count(*) as login_success from users where username = ? and password = ?"; 
 
+    public static final String SQL_CHECK_USER_EXISTS_USERNAME = "select count(*) as user_found from users where username =? ";
+
     public static final String SQL_SEARCH_USER = "select * from users where username = ? and password = sha1(?)";
 
     public static final String SQL_SEARCH_USER_ID = "select user_id from users where username = ?";
@@ -80,10 +82,6 @@ public class UserRepository {
         SqlRowSet rs = template.queryForRowSet(SQL_SEARCH_USER_ID, username);
         if (!rs.next())
             return null;
-    //    User user1 = new User();
-    //    user1.setUserId(rs.getInt("user_id"));
-    //    user1.setUsername(rs.getString("username"));
-    //    user1.setPassword(rs.getString("password"));
         return rs.getInt("user_id");
 
     }
@@ -100,6 +98,15 @@ public class UserRepository {
             user.setPassword(rs.getString("password"));
             return Optional.of(user);
         }
+    }
+
+    public int checkUserExists(String username){
+
+        SqlRowSet rs = template.queryForRowSet(SQL_CHECK_USER_EXISTS_USERNAME, username);
+
+        if (!rs.next())
+            return 0;
+        return rs.getInt("user_found");
     }
 
 

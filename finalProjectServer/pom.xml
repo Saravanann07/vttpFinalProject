@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>vttp2022batch1</groupId>
-	<artifactId>finalProjectServer</artifactId>
+	<artifactId>finalprojectserver</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>finalProjectServer</name>
 	<description>Demo project for Spring Boot</description>

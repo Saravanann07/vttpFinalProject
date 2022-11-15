@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { Response, Stock } from 'src/app/models/model';
@@ -26,10 +27,11 @@ export class HomePageComponent implements OnInit {
 
   imgSrc!: string 
   
-
   form!: FormGroup
 
   dateForm!:FormGroup
+
+
 
   constructor(private stockSvc: StockService, 
               private userSvc: UserService,
@@ -52,14 +54,17 @@ export class HomePageComponent implements OnInit {
     this.imgSrc = `https://saravttp.sgp1.digitaloceanspaces.com/users/${this.username}`;
     console.log(this.imgSrc)
    
+
     
     this.stockSvc.getHomepage(this.userId)
       .then(data => {
-        this.stockList = data
+        this.stockList = data  
         console.info(">>>>>>StockList retreived: ", data)
+        
+
       }).catch(error =>{
         alert('Error occurred while retreiving stock list!')
-      })
+      })    
       this.createForm()
       this.byDateSearch()
   }
@@ -70,7 +75,7 @@ export class HomePageComponent implements OnInit {
     localStorage.removeItem('username')
     this.router.navigate([''])
     this.snackBarSvc.displayMessage('LOGOUT_SUCCESSFUL', 'greenyellow');
-    this.snackBar.openFromComponent(SnackbarComponent, {duration: 3000, verticalPosition: 'bottom'})
+    this.snackBar.openFromComponent(SnackbarComponent, {duration: 3000, verticalPosition: 'top'})
 }
 
   createForm(){
@@ -106,12 +111,14 @@ export class HomePageComponent implements OnInit {
     this.stockSvc.deleteStock(stock, stock.userId)
     .then((data: any) => {
       const resp: Response = data;
-      alert(resp.message);        
+      this.snackBarSvc.displayMessage('DELETE SUCCESS', 'yellowgreen');
+      this.snackBar.openFromComponent(SnackbarComponent, {duration: 3000, verticalPosition: 'top'})   
       this.router.navigate(['/homepage', this.userId])
       this.retrieveStockList()
     }).catch((error: any) => {
       const resp: Response = error;
-      alert(resp.message)
+      this.snackBarSvc.displayMessage('DELETE ERROR', 'red');
+      this.snackBar.openFromComponent(SnackbarComponent, {duration: 3000, verticalPosition: 'top'})
     })
   }
 
@@ -124,5 +131,7 @@ export class HomePageComponent implements OnInit {
         console.info('>>>>> Error!')
       })
   }
+
+  
 
 }

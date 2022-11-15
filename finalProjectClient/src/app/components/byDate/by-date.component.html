@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <!-- CSS only -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,6 +10,12 @@
 <body>
     <p>
         <mat-toolbar color="primary" style="height:90px;" > 
+            <button mat-icon-button style="margin-left: 15px;" (click)="userLogout()">
+                <mat-icon class="icon-display">exit_to_app</mat-icon>
+            </button>
+            <button mat-icon-button [routerLink]="[ '/addStock', userId ]" style="margin-left: 15px;">
+                <mat-icon class="icon-display">add_circle_outline</mat-icon>
+            </button>
           <div style="text-align: center; margin:0 auto; font-size: 60px;">
             <span >StockStatuss</span>
           </div>

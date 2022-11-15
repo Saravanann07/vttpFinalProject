@@ -44,9 +44,7 @@ export class UserService {
 
   registration(formData: FormData): Promise<Response>{
 
-    // const headers = new HttpHeaders()
-    //                   .set('Content-Type', 'multipart/form-data')
-    //                   .set('Accept', 'multipart/form-data')                  
+             
                       
     return firstValueFrom(
       this.httpClient.post<Response>(URL_REGISTRATION, formData)

@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { User, Response } from 'src/app/models/model';
+import { SnackbarService } from 'src/app/Service/snackbar.service';
 import { UserService } from 'src/app/Service/user.service';
+import { SnackbarComponent } from '../snackbar/snackbar.component';
 
 @Component({
   selector: 'app-register',
@@ -27,7 +30,9 @@ export class RegisterComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private userSvc: UserService,
-              private router: Router) { }
+              private router: Router,
+              private snackBar: MatSnackBar,
+              private snackBarSvc: SnackbarService) { }
 
   ngOnInit(): void {
     this.createForm()
@@ -61,13 +66,14 @@ export class RegisterComponent implements OnInit {
     .then((data: any) => {
       console.info('User successfully registered!', formData)
       const resp: Response = data;
-      alert(resp.message)
+      this.snackBarSvc.displayMessage('REGISTRATION_SUCCESSFUL', 'yellowgreenn');
+        this.snackBar.openFromComponent(SnackbarComponent, {duration: 3000, verticalPosition: 'top'})
       this.router.navigate([''])
     }).catch((error: any) => {
       const resp: Response = error;
-      alert(resp.message)
+      this.snackBarSvc.displayMessage('REGISTRATION_UNSUCCESSFUL', 'red')
+      this.snackBar.openFromComponent(SnackbarComponent, {duration: 3000, verticalPosition: 'top'});
     })
-    // this.userSvc.registration(formData)
   }
 
   userInputPhoto(event: any) {

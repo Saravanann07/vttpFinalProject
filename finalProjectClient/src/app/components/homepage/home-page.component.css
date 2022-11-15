@@ -3,37 +3,37 @@
   }
 
 table {
-    width: 95%;
-    /* width: fit-content; */
-    /* margin: 0; */
-
+  width: 95%;
   }
 
-img {
-    width: 100px;
-    height: 90px;
-    border-radius: 50%;
-    position: absolute;
+  @media only screen and (max-width: 480px) {
+    /* horizontal scrollbar for tables if mobile screen */
+    .tablemobile {
+        overflow-x: auto;
+        display: block;
+    }
+}
+
+
+
+img{
+
+  width: 100px;
+  height: 90px;
+  border-radius: 50%;
+  position: absolute;
     right:10px;
     top: 0px;;
+
 }
 
-div {
-  display: flex;
-  justify-content: center;
-
-  /* text-align: center; */
-  padding: 65px;
-}
 
 mat-card {
   margin: 0;
   border: 1px solid black;
   width: 400px;   
   height: 100px;
-  /* display: flex; */
-  /* justify-content: center; */
-  /* align-items: center; */
+
   
 }
 
@@ -43,19 +43,9 @@ mat-card {
   align-items: center; /* align vertical */
 }
 
-/* .parent {
-  text-align: center;
-  display: flex;
-  padding: 65px; */
-  /* display: block; */
-  /* margin-left: auto;
-  margin-right: auto;
-} */
-/* .child {
-  padding: 20px;
-} */
 
-/* body{
+
+body{
   margin: 0;
   font-size: .9rem;
   font-weight: 400;
@@ -63,8 +53,22 @@ mat-card {
   color: #212529;
   text-align: left;
   background-color: #f5f8fa;
-} */
-p {
+}
+
+
+.text {
+
   margin-left: 50px;
   font-weight:  bold;
+
+}
+
+.icon-display {
+  transform: scale(2);
+}
+
+.buttons {
+  display: flex; 
+  justify-content: center;
+  padding-top: 30px;
 }

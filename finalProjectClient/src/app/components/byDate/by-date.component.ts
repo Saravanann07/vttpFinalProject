@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Stock, Response } from 'src/app/models/model';
+import { SnackbarService } from 'src/app/Service/snackbar.service';
 import { StockService } from 'src/app/Service/stock.service';
+import { SnackbarComponent } from '../snackbar/snackbar.component';
 
 @Component({
   selector: 'app-by-date',
@@ -20,7 +23,9 @@ export class ByDateComponent implements OnInit {
 
   constructor(private stockSvc: StockService,
               private router: Router,
-              private activatedRoute: ActivatedRoute) { }
+              private activatedRoute: ActivatedRoute,
+              private snackBar: MatSnackBar,
+              private snackBarSvc: SnackbarService) { }
 
   ngOnInit(): void {
 
@@ -50,13 +55,15 @@ export class ByDateComponent implements OnInit {
     this.stockSvc.deleteStock(stock, stock.userId)
     .then((data: any) => {
       const resp: Response = data;
-      alert(resp.message);  
+      this.snackBarSvc.displayMessage('DELETE SUCCESS', 'yellowgreen');
+      this.snackBar.openFromComponent(SnackbarComponent, {duration: 3000, verticalPosition: 'top'})   
       console.info(this.date)      
       this.router.navigate(['/byDate', this.userId], {queryParams: {date: stock.purchaseDate}})
       this.retrieveStockList()
     }).catch((error: any) => {
       const resp: Response = error;
-      alert(resp.message)
+      this.snackBarSvc.displayMessage('DELETE ERROR', 'red');
+      this.snackBar.openFromComponent(SnackbarComponent, {duration: 3000, verticalPosition: 'top'})
     })
   }
 
@@ -77,6 +84,8 @@ export class ByDateComponent implements OnInit {
     localStorage.removeItem('userId')     
     localStorage.removeItem('username')
     this.router.navigate([''])
+    this.snackBarSvc.displayMessage('LOGOUT SUCCESSFUL', 'yellowgreen');
+    this.snackBar.openFromComponent(SnackbarComponent, {duration: 3000, verticalPosition: 'top'})  
 }
 
 }

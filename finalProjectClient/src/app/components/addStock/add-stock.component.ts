@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { Stock, Response } from 'src/app/models/model';
+import { SnackbarService } from 'src/app/Service/snackbar.service';
 import { StockService } from 'src/app/Service/stock.service';
+import { SnackbarComponent } from '../snackbar/snackbar.component';
 
 @Component({
   selector: 'app-add-stock',
@@ -37,6 +40,8 @@ export class AddStockComponent implements OnInit {
               private stocKSvc: StockService,
               private router: Router,
               private activatedRoute: ActivatedRoute,
+              private snackBar: MatSnackBar,
+              private snackBarSvc: SnackbarService
               ) { }
 
   ngOnInit(): void {
@@ -72,12 +77,13 @@ export class AddStockComponent implements OnInit {
     this.stocKSvc.stockAdded(stock, stock.userId)
     .then((data: any) => {
       const resp: Response = data;
-      alert(resp.message)
+      this.snackBarSvc.displayMessage('SUCCESSFULLY ADDED', 'yellowgreen');
+      this.snackBar.openFromComponent(SnackbarComponent, {duration: 3000, verticalPosition: 'top'})      
       this.createForm()
-      // this.router.navigate(['/homepage', this.userId])
     }).catch((error: any) => {
       const resp: Response = error;
-      alert(resp.message)
+      this.snackBarSvc.displayMessage('STOCK CANNOT BE ADDED', 'red');
+      this.snackBar.openFromComponent(SnackbarComponent, {duration: 3000, verticalPosition: 'top'})
     })
   
   this.onStockAdded.next(stock)
@@ -92,6 +98,8 @@ export class AddStockComponent implements OnInit {
     localStorage.removeItem('userId')     
     localStorage.removeItem('username')
     this.router.navigate([''])
+    this.snackBarSvc.displayMessage('LOGOUT SUCCESSFUL', 'yellowgreen');
+    this.snackBar.openFromComponent(SnackbarComponent, {duration: 3000, verticalPosition: 'top'})    
 }
 
 }

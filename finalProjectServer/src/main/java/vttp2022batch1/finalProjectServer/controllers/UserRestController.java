@@ -28,6 +28,7 @@ import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 import vttp2022batch1.finalProjectServer.models.Response;
 import vttp2022batch1.finalProjectServer.models.Stock;
+import vttp2022batch1.finalProjectServer.repositories.UserRepository;
 import vttp2022batch1.finalProjectServer.models.Registration;
 import vttp2022batch1.finalProjectServer.services.APIService;
 import vttp2022batch1.finalProjectServer.services.DOService;
@@ -56,16 +57,35 @@ public class UserRestController {
     @Autowired
     private StockService stockSvc;
 
+    @Autowired
+    private UserRepository userRepo;
+
 
     @PostMapping(path="/registration", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> registerUser(@ModelAttribute Registration reg){
 
+        System.out.println(reg.getUsername());
+
+        boolean userExists = userSvc.checkUserExists(reg.getUsername());
+
+        System.out.println(">>>>>"+ !userExists);
+        Number userExist = userRepo.checkUserExists(reg.getUsername());
+
+        Response resp = new Response();
+
+        if (userExists){
+            resp.setCode(HttpStatus.BAD_REQUEST.value());
+            resp.setMessage("Error registering user");
+        }
+        
+        else{
         boolean addUser = userSvc.addUser(reg);
         System.out.println(addUser);
         boolean photoUploaded = doSvc.postS3upload(reg);
         System.out.println(photoUploaded);
+    
 
-        Response resp = new Response();
+        
 
         if (addUser && photoUploaded){
 
@@ -78,6 +98,7 @@ public class UserRestController {
             resp.setCode(HttpStatus.BAD_REQUEST.value());
             resp.setMessage("Error registering user");
         }
+    }
 
         return ResponseEntity
                     .status(resp.getCode())
@@ -106,7 +127,12 @@ public class UserRestController {
                 .body(Response.toJson(resp).toString());
         }
 
+      
         Stock stock = Stock.create(obj);
+        if (apiSvc.getCompanyName(stock.getSymbol()) == null){
+            resp.setCode(HttpStatus.BAD_REQUEST.value());
+            resp.setMessage("Error adding stck purchase. Please try again");
+        }
         boolean addStock = stockSvc.addStockPurchase(stock);
 
         if (addStock){
@@ -114,7 +140,7 @@ public class UserRestController {
             resp.setMessage("Stock purchase has been successfully added to list");
         } else {
             resp.setCode(HttpStatus.BAD_REQUEST.value());
-            resp.setMessage("Error adding contact to list");
+            resp.setMessage("Error adding stock purchase");
         }
 
         return ResponseEntity
@@ -161,7 +187,6 @@ public class UserRestController {
 
         System.out.println(date1);
 
-        // List<Stock> stockList = stockSvc.getUserStockListByDate(date1, userIdInt);
         List<Stock> stockList = stockSvc.getUserStockListByDate(date, userIdInt);
 
         List<JsonObject> objectList = new LinkedList<>();
@@ -176,7 +201,6 @@ public class UserRestController {
 
             objectList.add(Stock.toJsonName(stock, companyName, marketValue)); 
             System.out.println(objectList);
-            // builder.add(Stock.toJson(stock, marketValue));
             builder.add(Stock.toJsonName(stock, companyName, marketValue));
 
         }
@@ -239,16 +263,6 @@ public class UserRestController {
                     .status(resp.getCode())
                     .body(Response.toJson(resp).toString());
 
-        // List<Stock> stockList = stockSvc.getUserStockList(user.getUserId());
-        // List<JsonObject> objectList =new LinkedList<>();
-
-        // for (Stock stock1 : stockList){
-
-        //     Double sharePrice = apiSvc.getQuote(stock1.getSymbol());
-        //     Double marketValue = sharePrice*stock1.getQuantity();
-        //     objectList.add(Stock.toJson(stock1, marketValue)); 
-        // }
-        // return ResponseEntity.ok().body(objectList.toString());
     }
 
     @GetMapping(path="/logout")

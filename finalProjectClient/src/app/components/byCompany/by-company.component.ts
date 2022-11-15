@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Stock, Response } from 'src/app/models/model';
+import { SnackbarService } from 'src/app/Service/snackbar.service';
 import { StockService } from 'src/app/Service/stock.service';
+import { SnackbarComponent } from '../snackbar/snackbar.component';
 
 @Component({
   selector: 'app-by-company',
@@ -22,7 +25,9 @@ export class ByCompanyComponent implements OnInit {
 
   constructor(private stockSvc: StockService,
               private router: Router,
-              private activatedRoute: ActivatedRoute) { }
+              private activatedRoute: ActivatedRoute,
+              private snackBar: MatSnackBar,
+              private snackBarSvc: SnackbarService) { }
 
   ngOnInit(): void {
     this.userId = this.activatedRoute.snapshot.params['userId']
@@ -47,13 +52,15 @@ export class ByCompanyComponent implements OnInit {
     this.stockSvc.deleteStock(stock, stock.userId)
     .then((data: any) => {
       const resp: Response = data;
-      alert(resp.message);  
+      this.snackBarSvc.displayMessage('DELETE SUCCESS', 'yellowgreen');
+      this.snackBar.openFromComponent(SnackbarComponent, {duration: 3000, verticalPosition: 'top'})       
       console.info(stock.symbol)      
       this.router.navigate(['/byCompany', this.userId], {queryParams: {symbol: stock.symbol}})
       this.retrieveStockList()
     }).catch((error: any) => {
       const resp: Response = error;
-      alert(resp.message)
+      this.snackBarSvc.displayMessage('DELETE ERROR', 'red');
+      this.snackBar.openFromComponent(SnackbarComponent, {duration: 3000, verticalPosition: 'top'})
     })
   }
 
@@ -77,6 +84,8 @@ export class ByCompanyComponent implements OnInit {
     localStorage.removeItem('userId')     
     localStorage.removeItem('username')
     this.router.navigate([''])
+    this.snackBarSvc.displayMessage('LOGOUT SUCCESSFUL', 'yellowgreen');
+    this.snackBar.openFromComponent(SnackbarComponent, {duration: 3000, verticalPosition: 'top'})  
 }
 
   

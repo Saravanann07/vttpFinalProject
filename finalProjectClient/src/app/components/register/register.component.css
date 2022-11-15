@@ -52,3 +52,7 @@ p
     font-weight: bold;
     color: red;
 }
+
+.icon-display {
+    transform: scale(2);
+  }

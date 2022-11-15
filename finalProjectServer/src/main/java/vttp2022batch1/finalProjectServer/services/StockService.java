@@ -14,12 +14,7 @@ public class StockService {
     @Autowired
     private StockRepository stockRepo;
 
-    // public boolean addStockPurchase(Stock stock, Integer userId){
 
-    //     Integer addStock = stockRepo.addStockPurchase(stock, userId);
-
-    //     return addStock == 1;
-    // }
     public boolean addStockPurchase(Stock stock){
 
         Integer addStock = stockRepo.addStockPurchase(stock);
@@ -35,9 +30,6 @@ public class StockService {
         return stockRepo.getCompanyStockList(symbol, userId);
     }
 
-    // public List<Stock> getUserStockListByDate(Date date, Integer userId){
-    //     return stockRepo.getUserStocksByDate(date, userId);
-    // }
 
     public List<Stock> getUserStockListByDate(String date, Integer userId){
         return stockRepo.getUserStocksByDate(date, userId);

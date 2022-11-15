@@ -17,17 +17,18 @@ public class UserService {
     @Autowired 
     private UserRepository userRepo;
 
-    //autowired DO Service
 
     public boolean addUser(Registration reg){
         Integer addUser = userRepo.addUser(reg);
-        //DO method here (registration.getProfilePic)
-        //upload to s3 is within the DO service itself
         return addUser == 1;  
     }
 
     public boolean authenticate(AppUser user){
         return 1 == userRepo.countUsersByNameAndPassword(user);
+    }
+
+    public boolean checkUserExists(String username){
+        return 1 == userRepo.checkUserExists(username);
     }
 
 

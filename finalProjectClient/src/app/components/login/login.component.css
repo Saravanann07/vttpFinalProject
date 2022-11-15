@@ -9,15 +9,7 @@ body{
     background-color: #f5f8fa;
 }
 
-/* .navbar-laravel
-{
-    box-shadow: 0 2px 4px rgba(0,0,0,.04);
-} */
 
-/* .navbar-brand , .nav-link, .my-form, .login-form
-{
-    font-family: Raleway, sans-serif;
-} */
 
 .my-form
 {
@@ -42,3 +34,7 @@ body{
     margin-left: 0;
     margin-right: 0;
 }
+
+.icon-display {
+    transform: scale(2);
+  }
