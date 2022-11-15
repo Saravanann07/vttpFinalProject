@@ -10,6 +10,6 @@ Users can also narrow down their portfolio by making the following searches
 - Search by purchase date
 
 
-Heroku Link: https://stockstatuss.herokuapp.com/#/
+Heroku Deployed Link: https://stockstatuss.herokuapp.com/#/
 
-Kurernetes Cluster Link: http://146.190.194.45/#/
+Kubernetes Cluster Deployed Link: http://146.190.194.45/#/
