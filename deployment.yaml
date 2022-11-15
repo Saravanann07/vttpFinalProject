@@ -3,7 +3,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: stockstatuss-deployment
+  name: stockstatuss-deployment1
   labels: 
     name: finalproject-pod
     dev: sara
@@ -24,7 +24,7 @@ spec:
     spec: 
       containers:
       - name: finalproject-container
-        image: saravanann07/finalprojectserver:0.0.1-SNAPSHOT
+        image: saravanann07/finalprojectserver:v.0.1
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
